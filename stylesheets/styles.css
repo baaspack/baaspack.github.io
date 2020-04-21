@@ -34,6 +34,7 @@ body {
 
 h1, h2, h3, h4 {
   font-family: var(--font-family-header);
+  color: var(--color-claret);
   text-transform: lowercase;
 }
 
@@ -93,7 +94,6 @@ nav .bp-mark {
 }
 
 .banner {  
-  color: white;
   font-family: var(--font-family-header);
   font-size: 2rem;
   padding: 25px 20px 20px;
@@ -101,6 +101,7 @@ nav .bp-mark {
 }
 
 .banner h1 {
+  color: white;
   font-size: 4rem;
 }
 
@@ -173,6 +174,11 @@ nav .bp-mark {
   text-align: center;
 }
 
+.team-members h2,
+.team-members h3 {
+  color: inherit;
+}
+
 .team-member {
   min-width: 200px;
   max-width: 400px;
@@ -199,6 +205,23 @@ nav .bp-mark {
 
 .contact-icons a:hover {
   filter: brightness(0) saturate(100%) invert(15%) sepia(36%) saturate(4703%) hue-rotate(313deg) brightness(87%) contrast(98%);
+}
+
+article.case-study {
+  font-size: 1.2rem;
+  margin: 0 auto;
+  padding: 0 20px;
+  max-width: 800px;
+  width: 100%;
+}
+
+article.case-study p {
+  margin: 1.6rem 0;
+  line-height: 1.6rem;
+}
+
+article.case-study h3 {
+  color: var(--color-pomegranate);
 }
 
 @media (max-width: 400px) {

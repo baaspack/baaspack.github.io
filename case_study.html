@@ -45,6 +45,927 @@
     <div class="banner case-study">
       <h1>case study</h1>
     </div>
+
+    <article class="case-study">
+      <h2>Abstract</h2>
+
+      <p>Backpack is a portable, open-source backend-as-a-service (BaaS). By exposing an API
+        for common backend functionality like database persistence and &nbsp;user authentication,
+        Backpack hides the complexities of setting up and managing backend services so that frontend developers can
+        focus
+        on building out web applications.</p>
+
+      <p>Backpack spins up an environment that can easily generate any number of isolated backends for
+        frontend applications. It is self-contained, enabling database persistence and storage without relying on
+        external
+        cloud services so that Backpack users<sup><a href="#cmnt1">[a]</a></sup>&nbsp;retain
+        full control over their application data.</p>
+
+      <p>A Backpack deployment consists of one or more Backpacks<sup><a href="#cmnt2">[b]</a></sup><sup><a
+            href="#cmnt3">[c]</a></sup>that each
+        provides basic backend functionality for a web app. To enable each Backpack deployment to support multiple
+        Backpacks, we built the system using a multi-instance architecture enabled by Docker Swarm:<br></p>
+      <ul>
+        <li>A Backpack instance within the swarm is packaged as a containerized stack of
+          services.</li>
+        <li>A reverse proxy also hosted within the swarm routes requests to specific
+          Backpacks based on human-friendly subdomain names.<br></li>
+      </ul>
+      <p>An admin panel gives developers control over their Backpacks, allowing them to create new
+        Backpacks with a single mouse click and a name. The system can either be hosted locally as a development sandbox
+        requiring minimal set-up and configuration, or it can be deployed to production with a domain
+        name<sup><a href="#cmnt4">[d]</a></sup>--the only requirement is Docker. It
+        is ready to scale from a single node to a multi-node server configuration.</p>
+
+      <p>We faced a number of challenges developing Backpack, from
+        dynamically &nbsp;generating HTTP routes and models for database collections in the core Backpack API,
+        to designing an infrastructure that can support multiple Backpack instances . In this
+        case study, we will discuss key decisions and problems we faced<sup><a href="#cmnt5">[e]</a></sup>.</p>
+
+      <h2>What exactly is a Backend-as-a-Service, and how does it work?</h2>
+
+      <p>Web applications are made up of two parts: a frontend and a backend. The frontend of
+        the application is typically concerned with how a website or mobile application looks and how users interact
+        with
+        it. In contrast, a backend manages data and handles business logic: it provides the information and
+        functionality
+        that underpins the user&rsquo;s frontend experience.</p>
+
+      <p>So what does &ldquo;managing data&rdquo; and &ldquo;handling business logic&rdquo; actually mean?
+        There are a host of tasks that comprise backend functionality, including user authentication, data persistence,
+        request routing, and file storage. Additionally, applications may require support for realtime
+        communication . &nbsp;Finally, after a backend is built, deployment brings its
+        own challenges such as server configuration, SSL certificates, and frontend hosting.</p>
+
+      <p>Each of these tasks requires specialized knowledge and a considerable amount of time
+        generating boilerplate code and ensuring that each of these features is integrated smoothly. A
+        Backend-as-a-Service (BaaS) makes these tasks easier by providing an API that reduces the complexity of backend
+        functionality for frontend developers.<br></p>
+      <p>The basic structure of a BaaS is a backend application that exposes API endpoints to create and
+        access data, store and retrieve files, authenticate users, and handle other backend functions.
+        Frontend developers integrate these services into their web applications by making calls to the
+        API.</p>
+
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 720.00px; height: 390.67px;"><img
+            alt="" src="images/image5.png"
+            style="width: 720.00px; height: 390.67px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""></p>
+
+      <p>To facilitate interaction with the API, a BaaS typically provides a Software Development Kit
+        (SDK). An SDK is a library that provides convenience methods for interacting with the exposed API. &nbsp;A
+        frontend developer uses the SDK to communicate with the backend through its API.
+        &nbsp;For web applications, the SDK is written in JavaScript. SDKs are often available for iOS and
+        Android development as well.</p>
+
+      <p>By providing this functionality, a BaaS handles a significant portion of a web app&rsquo;s overall
+        architecture. In addition to infrastructure, it is actually providing the application code that would otherwise
+        need to be written by the developer to enable backend functionality. This is one of the primary differentiators
+        between BaaS and other cloud services such as Infrastructure-as-a-Service (IaaS),
+        Platform-as-a-Service (PaaS), and Function-as-a-Service (FaaS). &nbsp;These services are
+        usually associated with cloud providers such as Amazon Web Services and Google Cloud, although there are many
+        smaller providers as well. So where does a BaaS fit in this ecosystem?</p>
+
+      <p>In terms of convenience for developers, Infrastructure-as-a-Service is a step above a
+        bare-metal deployment. IaaS provides infrastructure resources such as virtual machines, storage volumes, and
+        networking, and may handle scaling and other management tasks. The developer is responsible for provisioning and
+        managing their own operating systems and applications. Platform-as-a-Service providers such as Heroku extend
+        IaaS
+        by managing operating systems, data tools, and app deployment, but leave application code up to the developer.
+      </p>
+
+      <p>Backend-as-a-Service, in contrast, provides all or most of the services offered by IaaS
+        and PaaS, but in addition, handles backend functionality as described above, so that a developer&rsquo;s main
+        responsibility is frontend code.</p>
+
+
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 585.00px; height: 165.00px;"><img
+            alt="" src="images/image19.png"
+            style="width: 585.00px; height: 165.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""></p>
+      <p></p>
+      <p>With a ll of these services, there are trade-offs between convenience and control.
+        Compared to the other services mentioned above, a BaaS handles more of an application&rsquo;s core functionality
+        and therefore gives developers less control. Relying on a hosted BaaS means that a developer&rsquo;s data lives
+        on
+        infrastructure that is owned and controlled by the service provider. Even if developers can access
+        and interact with the data generated by their applications, this question of ownership<sup><a
+            href="#cmnt6">[f]</a></sup>&nbsp;and control over data is worth considering, especially for
+        developers concerned about privacy. Furthermore, relying on a hosted BaaS exposes a developer to the risk of
+        vendor lock-in if their application outgrows the BaaS. These close-source systems are not customizable beyond
+        the
+        built-in features offered by the provider. If a vendor drops support for features, makes changes that break
+        existing applications, raises the cost of their services, or even closes their service altogether
+        ( see<sup><a href="#cmnt7">[g]</a></sup>&nbsp;<a
+          href="https://www.google.com/url?q=https://techcrunch.com/2016/01/28/facebook-shutters-its-parse-developer-platform/&amp;sa=D&amp;ust=1587507234682000">https://techcrunch.com/2016/01/28/facebook-shutters-its-parse-developer-platform/</a>
+        &nbsp;regarding
+        Parse in 2016), a developer may find it difficult to move their applications to a different
+        platform.</p>
+
+      <p>We attempted to address these concerns with Backpack, an open-source, self-hosted BaaS. While a
+        self-hosted BaaS leaves more responsibility for developers, it also gives them more autonomy and
+        ownership over their applications and data<sup><a href="#cmnt8">[h]</a></sup>. Because
+        Backpack is self-hosted, application data stored in Backpack is
+        owned and controlled by the developer, not a cloud provider. Backpack is customizable
+        and has no vendor lock-in, can be spun up and scaled out on any hosts running Docker.</p>
+
+      <p>We built Backpack for development teams looking to provide a simple, functional backend
+        sandbox for frontend developers while minimizing the set-up and configuration the software engineering team has
+        to
+        do. Backpack requires a little more admin work than Google&rsquo;s Firebase or Amazon&rsquo;s Amplify (currently
+        the two most popular BaaS offerings), but with the benefit of privacy and flexibility.</p>
+
+      <h2>Backpack Core App / API</h2>
+      <h3>Introduction</h3>
+      <p>We set out to build a self-hosted BaaS with the following characteristics:</p>
+      <ul>
+        <li>Provides essential backend functionality to support real-time frontend
+          applications, including hosting</li>
+        <li>Is easy to i nstall and deploy<sup><a href="#cmnt10">[j]</a></sup></li>
+        <li>Can support multiple backends on a single deployment</li>
+      </ul>
+
+      <p>In the following sections, we will explore how we built a system with these
+        characteristics, beginning with the core Backpack application and tracing the expansion of the system from a
+        single app to a containerized, scalable, multi-instance system.</p>
+
+      <h3>Building a generic backend: the Backpack core app</h3>
+      <p>In this section we discuss the choices we made and the trade-offs we considered in building out
+        the core Backpack features.<sup><a href="#cmnt11">[k]</a></sup><sup><a href="#cmnt12">[l]</a></sup></p>
+
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 720.00px; height: 394.67px;"><img
+            alt="" src="images/image12.png"
+            style="width: 720.00px; height: 394.67px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""></p>
+
+      <p>At the core of Backpack&rsquo;s infrastructure is the Backpack API. Built in JavaScript
+        using Express, it is a generic backend that handles basic functionality and can be adapted to fit a frontend
+        developer&rsquo;s needs. How do you create a generic backend? When building the core Backpack API, we needed to
+        figure out how to provide basic backend functionality without knowing exactly how it would be used.</p>
+
+      <p>We &nbsp;started with the assumption that our frontend applications would have users,
+        and that those users would need to be authenticated. Additionally, the frontend developer will need
+        to store data of some kind and will need to be able to retrieve that data for processing and display, but we
+        don&rsquo;t know in advance what that data will be or how it will be accessed. They may also require storage of
+        user-generated content, such as photos. And finally, we don&rsquo;t know what kind of communication protocol
+        will
+        be required--in order to provide full functionality for a wide range of applications, it seems necessary to
+        provide realtime communication. We also need to provide a way for frontend developers to access this
+        functionality.<sup><a href="#cmnt13">[m]</a></sup><sup><a href="#cmnt14">[n]</a></sup><sup><a
+            href="#cmnt15">[o]</a></sup><sup><a href="#cmnt16">[p]</a></sup></p>
+
+      <h4>Authentication</h4>
+      <p>We started by tackling one of the most basic features of a web application--handling users.
+        Authentication and authorization services enable web apps to control access to resources and functionality.
+        For example, web apps may have public-facing content that anyone can access but require a user to
+        register and sign in to access additional features such as leaving a comment or liking a post.<sup><a
+            href="#cmnt17">[q]</a></sup></p>
+
+      <p>Unfortunately, while it might be relatively straightforward to put a user registration form on a
+        website, managing authentication securely can be hard (see the ever-growing number of data breaches tracked by
+        <a
+          href="https://www.google.com/url?q=https://haveibeenpwned.com/&amp;sa=D&amp;ust=1587507234687000">https://haveibeenpwned.com</a>
+        ):
+        passwords need to be hashed and transmitted over secure channels, tokens need to be protected from cross-site
+        scripting (XSS) attack s, and cookies need to be protected from CSRF attacks. &nbsp;An
+        increasingly common solution to this problem is to delegate the responsibility of
+        authorization to a third-party using the OAuth2 protocol. However, our goal was to create a self-contained,
+        portable backend that did not depend on other services, so this was not an option for us.</p>
+
+      <p>Instead, we built authentication and authorization functionality into
+        Backpack. &nbsp; Passwords are hashed with a salt to prevent rainbow table
+        attacks .<sup><a href="#cmnt18">[r]</a></sup>&nbsp;Sessions
+        are tracked using Redis. Session tokens for users are stored in cookies marked as HTTP-only, which helps prevent
+        XSS attacks. By automatically requesting SSL certificates for the subdomains assigned to Backpacks, we can also
+        mark the cookies as secure, ensuring they will be encrypted in transit along with passwords.</p>
+
+      <p>Like the other services provided by Backpack, we exposed API endpoints and created associated SDK
+        methods for authentication to allow frontend developers to easily build registration, sign in, and sign out
+        workflows into their applications.</p><sup><a href="#cmnt19">[s]</a></sup>
+
+      <h4>Data Persistence and Access</h4>
+      <p>One of the most important services a backend provides is data persistence and management. In the
+        case of a BaaS, this presents some extra challenges. Not knowing ahead of time what kind of data will need to be
+        stored means that flexibility is essential. Given this concern, we chose MongoDB for data persistence. While SQL
+        databases are tried and true and have many advantages--chief among them maintaining data integrity by enforcing
+        a
+        schema--for our use case, the schemaless flexibility of NoSQL<sup><a href="#cmnt20">[t]</a></sup>&nbsp;was a
+        better choice: it places the burden of maintaining
+        data integrity on the frontend developer, but also minimizes the constraints we place on them. In a traditional
+        backend, a developer can design the database schema for the specific application they are building, but by
+        definition a BaaS must be able to handle data in many different shapes and relationships without predefining
+        what
+        those shapes and relationships look like.</p>
+
+      <p>Furthermore, in the use case we envision--a sandbox environment for experimentation and
+        prototyping--the frontend dev might be rapidly iterating over the design of their application and the data it
+        uses. In this instance, we felt it was preferable to avoid the rigidity of schemas and the database migrations
+        required to update them.<sup><a href="#cmnt21">[u]</a></sup></p>
+
+      <p>Similar to other BaaS providers, we do enforce a schema for a predefined users collection that our
+        authentication services rely on. We also define and enforce a schema for a built-in collection used to store
+        metadata about user-uploaded content. Because MongoDB does not enforce schemas on its own and can be tricky to
+        interact with from a JavaScript application, we used an Object Document Modeling library, Mongoose,
+        to interact with Mongo from our core Backpack application . Mongoose allowed us to enforce
+        a schema over the built-in collections we knew our services needed while maintaining flexibility for the
+        collections created by developers using Backpack.</p>
+
+      <p>Not knowing in advance what kind of data will be saved to a Backpack complicates data
+        access as well. Normally, a backend can expose hard-coded API endpoints that correspond to the data collections
+        the application was built to manage. If the backend exposes a RESTful API, routes translate collection names
+        into
+        resources used in URL paths.</p>
+
+      <p>------------------------------------------------Diagram/flowchart of routes and
+        models------------------------------------------<sup><a href="#cmnt22">[v]</a></sup></p>
+
+
+      <p>However, in the case of a BaaS, where the backend isn&rsquo;t designed for any specific
+        collections and must instead be able to dynamically create them at runtime, that is not possible. Instead, the
+        backend must both &nbsp;enable new collections to be created
+        and &nbsp; handle requests for resources contained in these
+        dynamically generated collections.</p>
+
+      <p>We saw two ways of creating this functionality: either require requests to hit a
+        generic API endpoint with query parameters or a request body specifying the details about which collection was
+        being requested, or dynamically update the routes that a Backpack could handle based on the collections created
+        in
+        it.</p>
+
+      <p>We considered<sup><a href="#cmnt23">[w]</a></sup>&nbsp;both possibilities but decided to pursue
+        the latter course in the interest of maintaining a
+        RESTful design. On starting a Backpack, HTTP routes are generated for all collections in its database, and when
+        a
+        new collection is created, its full set of RESTful API endpoints are added to the Backpack so it can handle
+        requests for the new collection without requiring the entire application to restart to pick up the new routes.
+        &nbsp;</p>
+
+      <h4>Storage</h4>
+      <p>Another core component of many applications is persistent storage for user content.
+        Many BaaS providers use an Amazon S3 storage bucket for this . However, one of
+        our goals for Backpack was portability--it should be self-contained. Given this goal we had two options: using
+        the
+        file systems of the servers hosting a Backpack deployment or a database that supports storing files. The latter
+        has the advantage of storing a file and its metadata (such as the user that uploaded it) together, guaranteeing
+        data integrity. On the other hand, serving static files from a database is slower and has a higher overhead in
+        terms of the number of application layers that must be navigated to retrieve or interact with the files. A
+        regular
+        Mongo DB puts an upper limit on the file size allowed; using its GridFS specification solves that issue by
+        chunking files but at the cost of reduced speed.</p>
+      <p>&nbsp;</p>
+      <p>We opted to store user-generated files in the file system for a few reasons. The first was to
+        reduce dependencies on MongoDB and keep it focused on the single task of managing collection data, not serving
+        files. Keeping responsibilities for managing atomic collection data separate from managing files also allows the
+        services supporting each of these tasks to scale independently of one another without competing for the same
+        system resources. The second was to simplify the process of viewing and retrieving files, and increasing the
+        likelihood that they could be cached by a web server &nbsp;to reduce the load of handling
+        them on the core Backpack app .</p>
+
+      <p>Docker makes it easy to persist data stored in what would otherwise be ephemeral containers using
+        volumes.<sup><a href="#cmnt24">[x]</a></sup><sup><a href="#cmnt25">[y]</a></sup></p>
+
+      <h4>Websockets</h4>
+      <p>In addition to these basic backend services, many websites also need to handle realtime
+        communication. For instance, collaborative editors, chat apps, and games need very low-latency, bidirectional
+        communication between clients, which &nbsp;HTTP<sup><a href="#cmnt26">[z]</a></sup><sup><a
+            href="#cmnt27">[aa]</a></sup>can&rsquo;t
+        provide. In order to support a wider range of applications, we implemented websocket functionality between the
+        Backpack backend and the frontend web applications it supports.</p>
+
+      <p>Like HTTP, websockets are a communication protocol over TCP/IP. Unlike HTTP, websockets
+        provide bidirectional, full duplex communication--messages can be initiated on both the client-side and the
+        server-side, and messages can be sent and received at the same time. In addition, websocket communication is
+        very
+        low-latency because the connection is persistent and does not require headers.</p>
+
+      <p>Implementing websockets in a custom-built backend requires handling quite a bit of complexity.
+        Because websockets are an alternate communication protocol, many of the same issues that would normally be
+        handled
+        by HTTP requests and responses have to be addressed, such as database interactions and authentication. In
+        addition, the developer needs to create a websocket server, handle message broadcasting, and manage channels. On
+        the frontend, a developer needs to deal with establishing and maintaining the websocket connection, handling
+        failures, and creating the messages themselves. Backpack provides a layer of abstraction over much of
+        this complexity, with convenience methods for handling most websocket functions.<sup><a
+            href="#cmnt28">[ab]</a></sup></p>
+
+      <h4>Software Development Kit (SDK)<sup><a href="#cmnt29">[ac]</a></sup></h4>
+      <p>Finally, we wanted to make interacting with Backpack as convenient and easy as
+        possible, so we created a JavaScript library with convenience methods for interacting with Backpack&rsquo;s API.
+        The library can be included in the frontend code and configured with the appropriate URL and API key for the
+        Backpack they reference. SDK modules include database collection management, creating and interacting with
+        database records, handling and retrieving stored files, user authentication, and creating and handling websocket
+        messages.</p>
+
+      <p>// Get user_1&#39;s messages</p>
+      <p>backend . get ( &#39;Messages&#39; , {
+        user_id: &nbsp; &#39;user_1 &#39; });</p>
+      <p></p>
+      <p>// Send a heartwarming message from user_1 to user_2</p>
+      <p>const &nbsp; newMessage &nbsp;= {
+        from: &nbsp; &#39;user_1&#39; ,
+        to: &nbsp; &#39;user_2&#39; ,
+        text: &nbsp; &#39;You look great
+        today!&#39; &nbsp;};</p>
+      <p></p>
+      <p>backend . send ( &#39;Messages&#39; ,
+        newMessage ); // Saved!</p>
+
+      <h4>Frontend Hosting<sup><a href="#cmnt30">[ad]</a></sup>
+      </h4>
+      <p>The final step in the development of a web app is deploying it for hosting on the
+        internet. Since the backend functionality of the web apps using Backpack is being handled via API calls, the
+        frontend can easily be built as a static site that simply makes calls to the Backpack API to provide its core
+        functionality. This pattern of designing static sites built with JavaScript, API calls, and Markup is referred
+        to
+        as the JAMstack and has been popularized by the deployment platform Netlify.</p>
+
+      <p>Static sites are relatively easy to host using a web server like Nginx, so our final
+        service lets frontend developers upload a zip of their website for easy hosting on Backpack. Because this is
+        more
+        of a production concern, we&rsquo;ll go into further detail about how this works when we discuss the
+        multi-instance architecture of a full Backpack deployment.</p>
+
+      <h2>4. Packaging Backpack: Single-Instance Architecture<sup><a href="#cmnt31">[ae]</a></sup></h2>
+      <p>With our core Backpack app up and running, the next question was how to package the
+        app, databases, and dependencies for easy deployment. One of our main goals was to make deployment quick and
+        simple. We didn&rsquo;t want to require a frontend developer to install dependencies such as Mongo (for database
+        persistence), Redis (for user sessions), Nginx (for frontend hosting), and have to handle version
+        incompatibilities and other configuration headaches. Containerizing our system seemed like the obvious solution.
+      </p>
+
+      <p>What are containers?</p>
+
+      <p>Containers are a way to package applications with their dependencies in a consistent runtime
+        environment that is independent of and isolated from the host machine running the container. Containers are a
+        lightweight alternative to virtual machines. Because they share the host&rsquo;s operating system,
+        they are faster to spin up and require fewer system resources to run.<sup><a href="#cmnt32">[af]</a></sup>
+      </p>
+
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 720.00px; height: 386.67px;"><img
+            alt="" src="images/image2.png"
+            style="width: 720.00px; height: 386.67px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""></p>
+
+      <p>Once Docker is installed on a machine, the Docker Daemon can be used to run Docker containers on
+        the machine. The Docker Daemon spins up and tears down containers using Docker images that specify how the
+        containers should be built and which processes should run within them. A CLI makes it easy to to send
+        commands to the daemon over its API.<sup><a href="#cmnt33">[ag]</a></sup></p>
+
+      <p>Docker containers are intended to handle one process per container. Backpack requires
+        a minimum of four processes<sup><a href="#cmnt34">[ah]</a></sup>&nbsp;which will run
+        across four separate containers: one for the core Backpack app itself, another for the Mongo database, a third
+        for
+        the Redis database, and a fourth for the Nginx web server. &nbsp;</p>
+
+      <p>To make it easier to work with these four separate containers as one coherent system, we took
+        advantage of Docker&rsquo;s Compose file specification. Using a Compose file, we can define
+        services &nbsp;that specify how containers should run and interact with other
+        containers. Within the Compose file, we assign each service a name, specify which Docker image it should run,
+        and
+        join it to a Docker-specific bridge network that allows the service to communicate with other services on that
+        same network using its assigned name.</p>
+
+      <p>This network is private by default. In order to enable communication outside of the
+        container, the developer must explicitly specify which container port to expose and how that port should be
+        mapped
+        to the host machine&rsquo;s ports. In this first iteration, we use the Docker Compose file to map a port from
+        the
+        Express API container to a port on the host machine which will enable our app to listen for requests from the
+        host
+        machine.</p>
+
+      <p>Finally, to run our custom Express API as a container, we built a custom Docker image
+        to run our application on top of a NodeJS image. &nbsp;</p>
+
+
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 720.00px; height: 320.00px;"><img
+            alt="" src="images/image17.png"
+            style="width: 720.00px; height: 320.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""></p>
+
+
+      <p>Containerizing Backpack in this way dramatically simplifies the work required to deploy
+        Backpack by eliminating the need to manually set up and install the ecosystem of dependencies required to run
+        Backpack. By running the entire application through Docker, we can guarantee a consistent environment and
+        runtime
+        for each component of our system, regardless of where Backpack is spun up.</p>
+      <h2>5. Supporting Multiple Backpacks: Multi-Instance Architecture</h2>
+      <p>At this point &nbsp;we have<sup><a href="#cmnt35">[ai]</a></sup>&nbsp;a
+        system that is easy to deploy and supports one Backpack
+        instance, ideal for local development. But if we wanted to create a production system that can support more than
+        one backend on the same server, we would have to edit the Compose file significantly each time a Backpack was
+        deployed to avoid conflicts with ports, naming, and networks--this wouldn&rsquo;t be easy to manage and
+        significantly reduces the usefulness of Backpack. Our question then became, how can we support easy deployment
+        of
+        multiple Backpacks within one Backpack system? We considered two options for expanding our architecture: a
+        multi-tenant infrastructure and a multi-instance infrastructure.</p>
+      <h3>Multi-tenant vs. multi-instance</h3>
+
+      <h4>The Multi-Tenant Architecture</h4>
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 720.00px; height: 321.33px;"><img
+            alt="" src="images/image13.png"
+            style="width: 720.00px; height: 321.33px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""></p>
+
+      <p>In the multi-tenant architecture, a single Backpack instance would become the backend for multiple
+        web applications. A single Express API would handle requests from frontends of each application, routing them to
+        a
+        single MongoDB server which would persist data for each web application in a separate database within the same
+        cluster. A single Redis instance would store session data for each web app&rsquo;s users. Finally, a single
+        Nginx
+        server would host each web app&rsquo;s frontend from a separate directory.</p>
+
+      <p>Because the Express API is stateless, we can scale it horizontally if we need to support a growing
+        load of requests. Mongo also supports horizontal scaling either by replication or sharding.</p>
+
+      <p>There are a number of challenges &nbsp;associated with this
+        approach. The first two challenges have to do with routing and Backpack administration:<br></p>
+      <ol start="1">
+        <li>With one Express API server handling backend functionality for all web apps
+          supported by the system, we would need to build routing logic based on URLs or API keys into the Express
+          server
+          to figure out which backend tenant should handle each request.</li>
+        <li>In order to manage backend functionality for the different
+          applications using the system, we also need to provide some way for frontend developers to add new
+          applications
+          and remove ones they are no longer using. We also need to give them access to their application data. If we
+          don&rsquo;t add additional components to the system, all of this would need to be built into the single
+          Express
+          API.</li>
+      </ol>
+
+      <p>The next set of challenges arise from the lack of isolation between applications using
+        the multi-tenant model:<br></p>
+      <ol start="3">
+        <li>If one tenant receives heavy traffic or puts a heavy load on the database, it
+          could lead to problems with resource contention. This could be solved either by horizontally scaling the
+          application or the database.</li>
+      </ol>
+      <p></p>
+      <ol start="4">
+        <li>Storing data for multiple applications in the same environment creates a
+          significant security vulnerability. &nbsp;</li>
+      </ol>
+      <h4>The Multi-Instance Architecture</h4>
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 720.00px; height: 321.33px;"><img
+            alt="" src="images/image4.png"
+            style="width: 720.00px; height: 321.33px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""></p>
+
+      <p>In contrast, a multi-instance architecture would maximize isolation between
+        applications while separating routing and administration logic from the core Backpack API into dedicated
+        components. The backend for each application would be a self-contained environment comprised of the Express API,
+        MongoDB, Redis, and Nginx, just like our single-instance deployment.</p>
+
+      <p>While this architecture addresses the challenges introduced by the multi-tenant
+        architecture, it introduces a few of its own:</p>
+
+      <ol start="1">
+        <li>The components of each Backpack instance must be spun up and torn down
+          dynamically. This will require an admin panel to manage Backpack instances.<br></li>
+        <li>Because multiple Backpacks will live on the same system, we will need to introduce a
+          reverse proxy that can communicate with each Backpack&rsquo;s API and Nginx servers to route requests to the
+          correct backend.</li>
+      </ol>
+      <p>&nbsp;</p>
+      <p>Each of these approaches has its strengths and weaknesses. The multi-tenant
+        architecture keeps networking and container orchestration very simple, but complicates our application logic,
+        introduces some security concerns, and could lead to performance issues. In contrast, the multi-instance
+        architecture keeps our application logic focused on a single backend, offers isolation from other applications,
+        makes horizontal scaling across nodes extremely simple, and separates logic for routing and managing Backpack
+        instances to specialized services. Those benefits come at the cost of much more complicated networking and
+        container orchestration.</p>
+
+      <p>We felt that the costs involved with building a multi-instance system were well worth the
+        benefits, especially given the availability of existing networking and container orchestration tools.</p>
+
+      <h3>Building the multi-instance architecture</h3>
+      <p>After deciding on an architecture, we needed to figure out how to take the system from a
+        single-instance Backpack on a single server to a scalable, multi-instance, multi-node
+        system .</p>
+
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 472.00px; height: 479.00px;"><img
+            alt="" src="images/image15.png"
+            style="width: 472.00px; height: 479.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""><br></p>
+      <p>In our single-instance Backpack deployment, all four containerized components lived on
+        a single server. The API, Mongo, and Redis databases were connected to each other through a bridge network. A
+        fourth container running Nginx was part of the deployment, but was not connected to the bridge network since it
+        did not need to communicate directly with the other components in the deployment. The API and Nginx servers both
+        exposed ports to listen to requests.</p>
+
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 720.00px; height: 324.00px;"><img
+            alt="" src="images/image6.png"
+            style="width: 720.00px; height: 324.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""><br></p>
+      <p>In order to implement a multi-instance architecture that could support multiple
+        Backpacks in a single deployment, we needed to group our single-instance components into a logical unit, a
+        &lsquo;stack&rsquo; of containerized services, that we could dynamically spin up or tear down.</p>
+
+      <p>Figuring out how to deploy multiple Backpacks to a single server would introduce two
+        new challenges:</p>
+      <ol start="1">
+        <li>With multiple Backpacks running on one system, how could we route the requests
+          hitting the system to the appropriate Backpack instance?</li>
+        <li>A single server can only support so many processes before performance begins
+          degrading or the entire system crashes. How can we design our system to continue performing reliably as it
+          supports more Backpacks and heavier loads?</li>
+      </ol>
+
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 720.00px; height: 333.33px;"><img
+            alt="" src="images/image7.png"
+            style="width: 720.00px; height: 333.33px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""></p>
+
+      <p>To address this scaling issue, we could upgrade the server, but scaling up in this
+        manner quickly becomes expensive. Scaling out across multiple servers could solve this problem, but would
+        introduce additional complexity to our system&rsquo;s communication and routing needs as individual Backpack
+        stacks could now live on any host machine within a deployment.</p>
+
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 720.00px; height: 412.00px;"><img
+            alt="" src="images/image3.png"
+            style="width: 720.00px; height: 412.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""></p>
+
+      <p>Finally, if we&rsquo;re already going to scale out a Backpack deployment across
+        multiple servers and deal with the networking challenges that that introduces, can we take our system a step
+        further by deploying an individual Backpack stack across these servers? This would give us maximum flexibility
+        with how to deploy individual services. Perhaps we need beefier servers to handle database persistence and would
+        like all of our Mongo services to run from that server, moving the Nginx services to a less robust machine.
+      </p>
+
+      <p>To accomplish this, there are quite a few things we need to accomplish:</p>
+      <table>
+        <tbody>
+          <tr>
+            <td colspan="1" rowspan="1">
+              <p>&#9744; Spin up / tear down backpack stacks</p>
+              <p>&#9744; Spin up / tear down backpack stacks across servers</p>
+              <p>&#9744; Manage communication within stacks across servers</p>
+              <p>&#9744; Route requests from the internet to the right backpack</p>
+              <p>&#9744; Make it<span>easy &nbsp;to spin up / tear down
+                  backpack stacks</p>
+              <p>&#9744; Manage backpack users &amp; data from a centralized admin
+                panel</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4>Stack Management</h4>
+      <p></p>
+      <p>Luckily, there are tools for managing containerized systems that will make these tasks
+        manageable.</p>
+
+      <p>Container orchestrators are tools to &ldquo;manage, scale, and maintain containerized
+        applications&rdquo; and the networks they use to communicate (<a
+          href="https://www.google.com/url?q=https://docs.docker.com/get-started/orchestration/&amp;sa=D&amp;ust=1587507234714000">https://docs.docker.com/get-started/orchestration/</a>
+        ).
+        Docker Swarm and Kubernetes are two of the most popular container orchestrators. We chose to use
+        Docker Swarm because it is a part of Docker, which eliminates an extra dependency for our system. It is a bit
+        simpler to use than Kubernetes while still providing the functionality we need to accomplish all of the to-dos
+        we
+        have set ourselves.</p>
+
+      <p>So what exactly is a &ldquo;containerized application&rdquo;? In Swarm terminology, we
+        can think of a containerized application as a &ldquo;stack&rdquo; of coordinated services. A &ldquo;stack
+        file&rdquo; is a special version of the Compose file we used to create the single-instance Backpack. It
+        specifies
+        the services and networks that make up a stack. Stack files let us define how we want services to be deployed:
+        how
+        many replicas of a service to run, which networks a service should be a part of, and the name that other
+        services
+        will use to locate it on the network.</p>
+
+      <p>Docker provides a Command Line Interface to manage containers and swarms. Passing the
+        stack file as an argument to Docker&rsquo;s CLI commands will allow us to spin up, tear down, and manage
+        Backpack
+        stacks.</p>
+
+      <p>&#9745; Spin up / tear down backpack stacks Stack
+        Files &nbsp;</p>
+      <p>Docker Swarm is designed to manage containers running on multiple nodes, which is just
+        what we need to scale our system. A &ldquo;node&rdquo; in Swarm terminology is a machine running Docker that is
+        a
+        member of the swarm. Nodes can be managers or workers.</p>
+
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 720.00px; height: 514.67px;"><img
+            alt="" src="images/image16.png"
+            style="width: 720.00px; height: 514.67px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""></p>
+
+      <p>When you configure a swarm, you specify its desired state--for each service, how many
+        replicas or running tasks it requires, the ports it exposes, and the networks it belongs to. A
+        &ldquo;task&rdquo;
+        is a containerized process that instantiates a service. It is a manager node&rsquo;s job to maintain the system
+        in
+        the desired state by assigning tasks to worker nodes. Because Swarm figures out how to distribute services
+        across
+        worker nodes, scaling an application is relatively easy. Here we can see one Backpack stack that has been spread
+        out across four worker nodes:</p>
+
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 720.00px; height: 525.33px;"><img
+            alt="" src="images/image14.png"
+            style="width: 720.00px; height: 525.33px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""></p>
+
+      <p>If some of our services are deployed on different nodes, as in the diagram above, how
+        will they be able to communicate with each other? Swarm provides us with &ldquo;overlay&rdquo; networks that can
+        span across nodes. Each service is given a unique name so that it can be located by other services in the swarm.
+      </p>
+
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 720.00px; height: 525.33px;"><img
+            alt="" src="images/image18.png"
+            style="width: 720.00px; height: 525.33px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""></p>
+
+      <p>As we add more Backpacks to our system, Swarm will continue figuring out how to deploy
+        each Backpack&rsquo;s services across the nodes and take care of the networking within Backpack stacks using
+        overlay networks.</p>
+      <p></p>
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 720.00px; height: 528.00px;"><img
+            alt="" src="images/image10.png"
+            style="width: 720.00px; height: 528.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""></p>
+      <p></p>
+      <p>By choosing the right tool, Docker Swarm, we have accomplished our first three todo
+        items. We now have multiple Backpacks living on multiple nodes, with overlay networks for handling communication
+        between their services.</p>
+      <p></p>
+      <p>&#9745; Spin up / tear down backpack stacks across servers Worker &amp; Manager Nodes</p>
+      <p>&#9745; Manage communication within stacks across servers Overlay
+        Networks</p>
+      <p></p>
+      <h4>Routing &nbsp;</h4>
+      <p>Our next task is to route requests from outside the swarm to the correct Backpack.
+        While we can use overlay networks for intra-swarm communication, we have not yet solved the problem of how to
+        handle routing for requests from outside the system. Swarm provides something called an ingress routing mesh to
+        route requests from outside the swarm to the appropriate service within the swarm. When a service within the
+        swarm
+        publishes a port, that port gets published through the routing mesh so that any node that receives that request
+        can pass it off to the Swarm to handle appropriately.</p>
+      <p></p>
+      <p>This works well for a situation in which each service exposes a port with a unique number, as
+        would be the case, for example, with a single-instance Backpack deployment. If we specify that our Express API
+        should listen for requests on port 3000, and our Nginx server should listen on port 3001, &nbsp;the
+        ingress routing mesh will ensure that requests to those ports on any node are forwarded to the appropriate
+        service.</p>
+      <p></p>
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 720.00px; height: 493.33px;"><img
+            alt="" src="images/image11.png"
+            style="width: 720.00px; height: 493.33px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""></p>
+      <p></p>
+      <p>However, once we have multiple Backpack instances, routing becomes more complicated.
+        The ports each container should expose are specified in the Stack file that we use to spin up each Backpack
+        instance. But because each instance is configured by the same stack file, all Backpacks would expose the same
+        port
+        number. Two services can&rsquo;t expose the same port through the ingress routing mesh: it would have no way to
+        distinguish which service a particular request should be routed to. So how can we have all Backpack instances
+        run
+        on the same system and listen for requests if they all publish the same ports through the routing mesh?</p>
+      <p></p>
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 720.00px; height: 341.33px;"><img
+            alt="" src="images/image20.png"
+            style="width: 720.00px; height: 341.33px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""></p>
+      <p></p>
+      <p>A common solution to this problem is to use a reverse proxy that can receive requests
+        from outside the swarm and route the requests to the appropriate service within the swarm using configuration
+        rules. By running the proxy as another service within the swarm on the same overlay network as each
+        Backpack&rsquo;s Express API &amp; Nginx servers, we can stop exposing individual Backpack ports through
+        swarm&rsquo;s ingress routing mesh which would solve our port conflict issue. Because each Backpack stack is
+        assigned a unique name when it&rsquo;s spun up, we can incorporate that name into the reverse proxy&rsquo;s
+        routing rules, telling it to look for that name in the URL of incoming requests to route requests to the right
+        place.</p>
+      <p></p>
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 720.00px; height: 480.00px;"><img
+            alt="" src="images/image8.png"
+            style="width: 720.00px; height: 480.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""></p>
+      <p></p>
+      <p>However, we have not solved all of our routing problems yet. One of the key
+        requirements of our system is that it is easy to spin up and tear down Backpacks. This means that we need to be
+        able to inform our reverse proxy about changes in the swarm. If we use Nginx or HAProxy as our reverse proxies,
+        we&rsquo;ll need some way to dynamically modify their configurations when a Backpack is added or removed. Often,
+        updating a configuration will require the reverse proxy to restart for the changes to take effect, which creates
+        downtime for the system. One solution for this problem would be to replicate the reverse proxy and stagger
+        updates, but we would prefer to avoid these complications if possible.</p>
+      <p></p>
+      <p>In looking for an alternative approach, we found Traefik, a reverse proxy built for
+        use with containerized applications. Traefik is deployed as another service within our swarm and configured to
+        communicate with the swarm manager for updates on the state of the swarm. Based on the information it receives
+        from the swarm manager, Traefik reconfigures itself to route requests to new stacks or stop serving requests
+        from
+        stacks that are torn down.</p>
+      <p></p>
+      <p>Traefik uses routing rules to determine how to route a request to a service. When a
+        user assigns a name to a Backpack stack, swarm will use that name to uniquely identify both the stack and its
+        services. We can take advantage of this consistent naming scheme to set up Traefik&rsquo;s routing rules: each
+        Backpack will be given a subdomain name matching its stack name. When Traefik receives a request for that
+        subdomain, it will route that request to the Backpack stack whose name matches the subdomain in the request.
+      </p>
+      <p></p>
+      <p>Traefik provides an additional benefit as well. Because we are handling requests involving
+        passwords and possibly other sensitive information, request and response information should be encrypted by
+        using
+        HTTPS. To do that we need an SSL certificate associated with the hostname of each Backpack, but as we are
+        generating our hostnames dynamically, this becomes a little tricky. Traefik handles this by requesting SSL
+        certificates for subdomains automatically from Let&rsquo;s Encrypt. This creates a slight delay when we spin up
+        a
+        new Backpack (b etween 1 and 1,000,000 seconds<sup><a href="#cmnt36">[aj]</a></sup>), but
+        is a worthwhile trade-off for ensuring that communication
+        with Backpack is &nbsp;encrypted.</p>
+      <p></p>
+      <p>&#9745; Route requests from the internet to the right backpack Traefik &amp; Overlay
+        Networks</p>
+      <p>Adding a Traefik reverse proxy allows us to check routing off our list, which leaves
+        us with the task of handling system administration and swarm management.</p>
+      <h3>Admin Panel</h3>
+      <p>When we chose a multi-instance architecture, we prioritized isolation between Backpacks
+        and the separation of routing and administration logic from core backend functionality. This came at the cost of
+        additional application layers for container orchestration and routing. In addition, by achieving a high degree
+        of
+        isolation between Backpacks, we decentralized data persistence, making it more difficult for a frontend
+        developer
+        to manage data for multiple applications.</p>
+
+      <p>In the previous section, we described how we added a reverse proxy to handle routing challenges.
+        For the remaining issues--container orchestration and centralized management of individual
+        Backpack data--we built a custom admin panel.</p>
+      <h4>Stack Management</h4>
+      <p>Using a container orchestrator like Docker Swarm made it relatively easy to spin up or tear down
+        stacks of services and the networks that join them. By passing the stack file that describes the containerized
+        Backpack instance as an argument to Docker&rsquo;s CLI commands, we were able to spin up new stacks on demand or
+        tear down existing ones. However, this wasn&rsquo;t the kind of interface we could expose to the frontend
+        developers using our system.** The CLI requires root access on the server it is running from-- a huge
+        security concern --and we didn&rsquo;t feel like our users should need to know anything about how to
+        run Docker commands in order to use our system.</p>
+
+      <p>============================= diagram of painful CLI commands?
+        =====================</p>
+
+      <p>Our first step was to build an admin panel that could register and authenticate the
+        frontend developers using our system. They would be the only ones authorized to access any of this stack
+        management functionality. Once signed in, the frontend developers &nbsp;are presented with a UI that lets them
+        spin up a new Backpack stack by assigning it a name and clicking &ldquo;submit.&rdquo; The backend of the admin
+        panel receives the request to spin up a new Backpack and runs the relevant CLI commands. The standard output and
+        error streams from the CLI are piped back to the admin panel to confirm that the entire stack is spinning up
+        correctly. Backpack stacks can also be torn down with a click of a button using a similar process from the
+        backend.</p>
+
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 651.18px; height: 377.54px;"><img
+            alt="" src="images/image1.gif"
+            style="width: 651.18px; height: 377.54px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""></p>
+
+      <p>We built the admin panel as another containerized application running in the swarm.
+        We relied on Redis again to provide session storage, Express as a framework to build the backend, and
+        Nginx to server the frontend of the application. A container running Postgres provides the
+        data persistence we need to manage user accounts for frontend developers and the Backpacks they created. We
+        chose
+        not to use Mongo for this portion of our system because we had well-defined schemas for and relationships
+        between
+        each entity we wanted to store in the database--not a great use case for a NoSQL database.</p>
+
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 720.00px; height: 380.00px;"><img
+            alt="" src="images/image21.png"
+            style="width: 720.00px; height: 380.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""></p>
+      <h4>Data Management</h4>
+      <p>Our final challenge was giving frontend developers a convenient way to interact with
+        collection and user data for their applications. Since each Backpack was designed as a generic backend, we
+        already
+        exposed the functionality needed to interact with arbitrary collection data. We also provided API endpoints for
+        registering users. However, for security reasons, we did not expose endpoints for viewing all the users
+        registered
+        with a specific Backpack or for deleting users. As essential administrative features, we needed to find a way to
+        expose this functionality to developers without compromising the security of our system.</p>
+
+      <p>One solution would be to simply add this user management functionality to the Backpack
+        API and create some notion of roles to authenticate developers versus normal users of their applications. After
+        authenticating as a developer, these user management endpoints could be reached like any other API endpoint. We
+        wanted to avoid exposing these vulnerable endpoints to the internet, so we explored some other options.</p>
+
+      <p>Another solution would be to connect the admin panel directly to each Backpack&rsquo;s MongoDB
+        instance so that the admin panel would have full access to the database independent of the Express API.
+        However<sup><a href="#cmnt37">[ak]</a></sup><sup><a href="#cmnt38">[al]</a></sup>, with
+        our current architecture, each Backpack&rsquo;s MongoDB
+        service is not accessible outside of the private overlay network used to manage communication within the
+        Backpack.
+        That is, there is no way to reach the MongoDB service outside of the Express API associated with its same
+        Backpack. This allows us to guarantee that the only way to interact with a Backpack&rsquo;s data store is
+        through
+        the application logic built into the Express API, a feature we would like to maintain for security and
+        reliability.</p>
+
+      <p>Our solution to this problem was to expose a second port on the Backpack Express API to
+        listen for requests from the admin backend. To enable this communication, we put the Backpack API on the same
+        overlay network as the admin backend. When a developertries to connect to one of their Backpacks through the
+        admin
+        panel, the frontend of the admin panel requests a websocket connection from the admin backend. The backend then
+        proxies this websocket request to the relevant Backpack using the overlay network and the unique service name
+        assigned in the stack file.</p>
+
+      <p>Because this second port is only accessible from the admin panel&rsquo;s backend, we can securely
+        expose the additional user management functionality we wouldn&rsquo;t want normal users to have access to.
+        In order to allow for efficient data management, we make use of the persistent connection
+        afforded by the websocket connection to reflect database changes on the frontend of the admin panel. This
+        requires
+        a custom Redux middleware that automatically updates the state of the admin panel based on the messages
+        broadcast &nbsp;from the Backpack&rsquo;s websocket connection.</p>
+
+      <p><span
+          style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 720.00px; height: 370.67px;"><img
+            alt="" src="images/image9.png"
+            style="width: 720.00px; height: 370.67px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
+            title=""></p>
+      <a></a><a></a>
+      <table>
+        <tbody>
+          <tr>
+            <td colspan="1" rowspan="1">
+              <p><span>&#9745; Spin up / tear down backpack stacks<span>Stack
+                    Files</p>
+              <p><span>&#9745; Spin up / tear down backpack stacks across servers<span>Worker &amp; Manager Nodes</p>
+              <p><span>&#9745; Manage communication within stacks across servers
+                  <span>Overlay Networks</p>
+              <p><span>&#9745; Route requests from the internet to the right backpack
+                  <span>Traefik &amp; Overlay Networks</p>
+              <p><span>&#9745; Make it<span>easy<span>&nbsp;to spin up / tear down backpack stacks<span>Admin panel
+                        hiding Docker CLI</p>
+              <p><span>&#9745; Manage backpack users &amp; data from a centralized admin panel
+                  <span>Overlay Networks</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>With this final feature, the last items on our Backpack to-do list can be checked off.
+        We set out to create a self-hosted BaaS that would support multiple backends and provide easy installation and
+        deployment&hellip;.</p>
+
+      <p>Do we need a real conclusion?</p>
+
+
+      <h2>Section 4: Future Work<sup><a href="#cmnt39">[am]</a></sup></h2>
+      <ul>
+        <li>Show &ldquo;up&rdquo; or &ldquo;down&rdquo; status of each Backpack in the admin
+          panel with healthchecks</li>
+        <li>Spin up additional nodes for the Swarm from the admin panel using Docker Machine
+        </li>
+        <li>Let users control the number of Backpack API replicas handling API requests for
+          a specific Backpack &nbsp;</li>
+        <li>Stream logs from specific Backpacks to the admin panel or export them
+        </li>
+        <li>Make SDKs for iOS, Android</li>
+        <li>Features like email, push notifications&hellip;</li>
+        <li>Enable schema enforcement for Backpack collections</li>
+        <li>Enable access control features for Backpack collections</li>
+      </ul>
+
+
+      <p>Section 5: About Us</p>
+
+      <p>Section 6: References</p>
+      <p><a
+          href="https://www.google.com/url?q=http://www.floydhilton.com/docker/2017/03/31/Docker-ContainerHost-vs-ContainerOS-Linux-Windows.html&amp;sa=D&amp;ust=1587507234732000">http://www.floydhilton.com/docker/2017/03/31/Docker-ContainerHost-vs-ContainerOS-Linux-Wind</a>
+        <a
+          href="https://www.google.com/url?q=http://www.floydhilton.com/docker/2017/03/31/Docker-ContainerHost-vs-ContainerOS-Linux-Windows.html&amp;sa=D&amp;ust=1587507234732000">ows.html</a>
+        <sup><a href="#cmnt40">[an]</a></sup></p>
+      <p><a href="https://www.google.com/url?q=https://jamstack.org/&amp;sa=D&amp;ust=1587507234733000">JAMStack for
+          static
+          sites</a><sup><a href="#cmnt41">[ao]</a></sup></p>
+      <p><a
+          href="https://www.google.com/url?q=https://docs.docker.com/get-started/orchestration/&amp;sa=D&amp;ust=1587507234733000">https://docs.docker.com/get-starte</a>
+        <a
+          href="https://www.google.com/url?q=https://docs.docker.com/get-started/orchestration/&amp;sa=D&amp;ust=1587507234734000">d/orchestration</a>
+        <sup><a href="#cmnt42">[ap]</a></sup><a
+          href="https://www.google.com/url?q=https://docs.docker.com/get-started/orchestration/&amp;sa=D&amp;ust=1587507234734000">/</a>
+      </p>
+      <p>Docker docs?</p>
+      <p>Mongo?</p>
+      <p>Mongoose?</p>
+    </article>
   </main>
 </body>
 
