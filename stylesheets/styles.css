@@ -1,0 +1,204 @@
+@import url('https://fonts.googleapis.com/css2?family=Biryani:wght@900&family=Lato:ital@0;1&display=swap');
+
+/* colors generated using http://chir.ag/projects/name-that-color */
+:root {
+  --color-persian-green: #00ac98;
+  --color-puerto-rico: #4AC1B4;
+  --color-buttercup: #f4a41d;
+  --color-pomegranate: #ee4523;
+  --color-flamingo: #f16132;
+  --color-claret: #7c1541;
+  --font-family-content: Lato, sans-serif;
+  --font-family-header: Biryani, sans-serif;
+  --font-family-code: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  --color-primary: var(--color-buttercup);
+  --color-success: var(--color-persian-green);
+  --color-danger: var(--color-pomegranate);
+  --color-link: var(--color-claret);
+  --color-link-hover: var(--color-flamingo);
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  height: 100%;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: var(--font-family-content);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-family-header);
+  text-transform: lowercase;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.17rem;
+}
+
+h4 {
+  font-size: 1.12rem;
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+  transition: 200ms;
+}
+
+a:hover {
+  color: var(--color-link-hover);
+}
+
+a.active-link {
+  text-decoration: underline;
+}
+
+nav ul {
+  align-items: center;
+  display: flex;
+  font-family: var(--font-family-header);
+  font-size: 1.1rem;
+  text-transform: lowercase;
+}
+
+nav li {
+  margin: 0 20px;
+}
+
+.nav-text {
+  display: block;
+  padding: 20px 0;
+}
+
+nav li:last-child {
+  margin-left: auto;
+}
+
+nav .bp-mark {
+  height: 75px;
+}
+
+.banner {  
+  color: white;
+  font-family: var(--font-family-header);
+  font-size: 2rem;
+  padding: 100px 20px;
+  text-align: center;
+}
+
+.banner h1 {
+  font-size: 4rem;
+}
+
+.banner.case-study {
+  background-color: var(--color-pomegranate);
+}
+
+.banner.our-team {
+  background-color: var(--color-persian-green);
+}
+
+.banner.home {
+  background-color: var(--color-buttercup);
+  color: var(--color-claret);
+}
+
+.banner.home * {
+  max-width: 100%;
+  max-height: 500px;
+}
+
+.features {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.feature-section {
+  width: 30%;
+  padding: 20px;
+  text-align: center;
+  flex: 1;
+  white-space: nowrap;
+}
+
+.feature-section ul {
+  display: inline-block;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.learn-more {
+  text-align: center;
+}
+
+.learn-more-nav-links {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.box {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.team-members {
+  background-color: var(--color-flamingo);
+
+  display: flex;
+  justify-content: space-around;
+  flex-grow: 1;
+
+  padding-top: 50px;
+  text-align: center;
+}
+
+.team-member {
+  min-width: 200px;
+  max-width: 400px;
+  padding: 10px;
+}
+
+.team-member-img {
+  width: 100%;
+}
+
+.contact-icons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.contact-icons img {
+  width: 40px;
+  transition: .4s;
+}
+
+.contact-icons a:hover {
+  filter: brightness(0) saturate(100%) invert(15%) sepia(36%) saturate(4703%) hue-rotate(313deg) brightness(87%) contrast(98%);
+}
+
+@media (max-width: 600px) {
+  .team-members {
+    flex-flow: column;
+    align-items: center;
+  }
+}
