@@ -96,7 +96,7 @@ nav .bp-mark {
   color: white;
   font-family: var(--font-family-header);
   font-size: 2rem;
-  padding: 100px 20px;
+  padding: 25px 20px 20px;
   text-align: center;
 }
 
@@ -200,6 +200,13 @@ nav .bp-mark {
 .contact-icons a:hover {
   filter: brightness(0) saturate(100%) invert(15%) sepia(36%) saturate(4703%) hue-rotate(313deg) brightness(87%) contrast(98%);
 }
+
+@media (max-width: 400px) {
+  .banner h1 {
+    word-spacing: 100vw;
+  }
+}
+
 
 @media (max-width: 600px) {
   .team-members {
