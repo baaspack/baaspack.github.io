@@ -162,6 +162,7 @@ nav .bp-mark {
 }
 
 .team-members {
+  color: white;
   background-color: var(--color-flamingo);
 
   display: flex;
@@ -176,6 +177,10 @@ nav .bp-mark {
   min-width: 200px;
   max-width: 400px;
   padding: 10px;
+}
+
+.team-member > * + * {
+  margin-top: 10px;
 }
 
 .team-member-img {
