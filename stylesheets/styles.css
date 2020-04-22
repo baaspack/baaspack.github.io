@@ -119,8 +119,8 @@ nav .bp-mark {
 
 .banner.home {
   background-color: var(--color-buttercup);
-  padding: 5%;
-  max-height: 600px;
+  padding: 10vh 5%;
+  max-height: 700px;
 }
 
 .learn-more {
@@ -132,6 +132,7 @@ nav .bp-mark {
   align-items: center;
   justify-content: center;
 
+  padding: 0 10px;
   text-transform: lowercase;
 }
 
