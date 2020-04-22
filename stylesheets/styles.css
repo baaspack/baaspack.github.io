@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Biryani:wght@900&family=Lato:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Biryani:wght@900&family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 /* colors generated using http://chir.ag/projects/name-that-color */
 :root {
@@ -94,10 +94,14 @@ nav .bp-mark {
 }
 
 .banner {  
-  font-family: var(--font-family-header);
-  font-size: 2rem;
-  padding: 25px 20px 20px;
-  text-align: center;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner img {
+  max-width: 100%;
 }
 
 .banner h1 {
@@ -115,34 +119,39 @@ nav .bp-mark {
 
 .banner.home {
   background-color: var(--color-buttercup);
-  color: var(--color-claret);
-}
-
-.banner.home * {
-  max-width: 100%;
-  max-height: 500px;
+  padding: 5%;
+  max-height: 600px;
 }
 
 .learn-more {
-  font-size: 4rem;
-  text-align: center;
-  text-transform: lowercase;
+  background-color: var(--color-pomegranate);
+  height: 100%;
 
-  margin-top: 50px;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+
+  text-transform: lowercase;
 }
 
+.learn-more h2 {
+  color: white;
+  margin-top: 2.5rem;
+  font-size: 2.5rem;
+}
 .learn-more a {
-  border: 1px solid var(--color-claret);
+  background-color: white;
   border-radius: 5px;
   color: var(--color-claret);
-  display: inline-block;
-  padding: 10px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 20px;
+  padding: 10px 20px;
 }
 
 .learn-more a:hover {
-  border: 1px solid var(--color-persian-green);
-  color: var(--color-persian-green);
-  transform: scale(1.5);
+  background-color: var(--color-puerto-rico);
 }
 
 .box {
@@ -218,7 +227,6 @@ article.case-study h3 {
     word-spacing: 100vw;
   }
 }
-
 
 @media (max-width: 600px) {
   .team-members {
