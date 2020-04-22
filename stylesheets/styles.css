@@ -123,37 +123,26 @@ nav .bp-mark {
   max-height: 500px;
 }
 
-.features {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.feature-section {
-  width: 30%;
-  padding: 20px;
-  text-align: center;
-  flex: 1;
-  white-space: nowrap;
-}
-
-.feature-section ul {
-  display: inline-block;
-  margin: 0 auto;
-  text-align: left;
-}
-
 .learn-more {
+  font-size: 4rem;
   text-align: center;
+  text-transform: lowercase;
+
+  margin-top: 50px;
 }
 
-.learn-more-nav-links {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
-  width: 80%;
-  margin: 0 auto;
+.learn-more a {
+  border: 1px solid var(--color-claret);
+  border-radius: 5px;
+  color: var(--color-claret);
+  display: inline-block;
+  padding: 10px;
+}
+
+.learn-more a:hover {
+  border: 1px solid var(--color-persian-green);
+  color: var(--color-persian-green);
+  transform: scale(1.5);
 }
 
 .box {
