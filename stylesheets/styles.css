@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Biryani:wght@900&family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Biryani:wght@700;900&family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 /* colors generated using http://chir.ag/projects/name-that-color */
 :root {
@@ -34,6 +34,7 @@ body {
 
 h1, h2, h3, h4 {
   font-family: var(--font-family-header);
+  font-weight: 900;
   color: var(--color-claret);
   text-transform: lowercase;
 }
@@ -68,15 +69,23 @@ a.active-link {
   text-decoration: underline;
 }
 
+nav {
+  height: 80px;
+}
+
 nav ul {
-  align-items: center;
   display: flex;
+
+  height: 100%;
+
   font-family: var(--font-family-header);
-  font-size: 1.1rem;
+  font-size: 1.23rem;
   text-transform: lowercase;
 }
 
 nav li {
+  display: flex;
+  align-items: center;
   margin: 0 20px;
 }
 
@@ -90,14 +99,14 @@ nav li:last-child {
 }
 
 nav .bp-mark {
-  height: 75px;
+  height: 65px;
 }
 
 .banner {  
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  justify-content: center;
+  padding-top: 12.5vh;
 }
 
 .banner img {
@@ -106,15 +115,26 @@ nav .bp-mark {
 
 .banner h1 {
   color: white;
-  font-size: 4rem;
+  font-size: 5.725rem;
+  margin-bottom: 6.25vh;
+  text-align: center;
 }
 
 .banner.case-study {
-  background-color: var(--color-pomegranate);
+  background-color: var(--color-flamingo);
+  height: 50vh;
+  max-height: 500px;
+}
+
+.banner.case-study p {
+  width: 50%;
+  color: white;
+  font-size: 1.75rem;
+  text-align: center;
 }
 
 .banner.our-team {
-  background-color: var(--color-persian-green);
+  background-color: var(--color-flamingo);
 }
 
 .banner.home {
@@ -140,7 +160,7 @@ nav .bp-mark {
   color: white;
   margin-top: 2.5rem;
   font-size: 2.5rem;
-  text-align: center;;
+  text-align: center;
 }
 
 .learn-more a {
@@ -149,7 +169,7 @@ nav .bp-mark {
   color: var(--color-claret);
   font-weight: bold;
   font-size: 1.2rem;
-  margin-top: 20px;
+  margin: 20px 0;
   padding: 10px 20px;
 }
 
@@ -180,28 +200,44 @@ nav .bp-mark {
   color: inherit;
 }
 
+.team-members h3 {
+  font-weight: normal;
+}
+
 .team-member {
   min-width: 200px;
   max-width: 400px;
   padding: 10px;
 }
 
-.team-member > * + * {
-  margin-top: 10px;
-}
-
 .team-member-img {
-  width: 100%;
+  border: 3.5px solid white;
+  border-radius: 50%;
+
+  max-height: 250px;
+  max-width: 100%;
+  margin-bottom: 10px;
 }
 
 .contact-icons {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
 }
 
 .contact-icons img {
-  width: 40px;
-  transition: .4s;
+  width: 30px;
+  animation: spreadOut .5s ease-in-out;
+  margin: 0 10px;
+}
+
+@keyframes spreadOut {
+  0% {
+    margin: 0;
+  }
+
+  100% {
+    margin: 0 10px;
+  }
 }
 
 .contact-icons a:hover {
@@ -229,8 +265,6 @@ article.case-study h3 {
   .banner h1 {
     word-spacing: 100vw;
   }
-
-
 }
 
 @media (max-width: 600px) {
@@ -242,5 +276,17 @@ article.case-study h3 {
   .learn-more h2 {
     margin-top: 1.5rem;
     font-size: 1.5rem;
+  }
+
+
+  .banner {  
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding-top: 6.25vh;
+  }
+
+  .banner.case-study p {
+    width: 90%;
   }
 }
