@@ -20,7 +20,7 @@
 
 html {
   box-sizing: border-box;
-  font-size: 16px;
+  font-size: 18px;
   height: 100%;
 }
 
@@ -141,13 +141,14 @@ nav .bp-mark:hover {
 
 .banner.case-study {
   background-color: var(--color-flamingo);
-  max-height: 600px;
+  max-height: 500px;
+  margin-bottom: 150px;
 }
 
 .banner.case-study p {
   color: white;
   font-size: 1.75rem;
-  margin: 5% auto 0;
+  margin: 2.5% auto 0;
   width: 50%;
   text-align: center;
 }
@@ -163,7 +164,7 @@ nav .bp-mark:hover {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 
   padding: 0 10px;
   text-transform: lowercase;
@@ -171,7 +172,7 @@ nav .bp-mark:hover {
 
 .learn-more h2 {
   color: white;
-  margin-top: 2.5rem;
+  margin-top: 5rem;
   font-size: 2.5rem;
   text-align: center;
 }
@@ -201,12 +202,13 @@ nav .bp-mark:hover {
   text-align: center;
 }
 
-.team-members h2,
+.team-members h2 {
+  color: inherit;
+  font-size: 2rem;
+}
 .team-members h3 {
   color: inherit;
-}
-
-.team-members h3 {
+  font-size: 1.25rem;
   font-weight: normal;
 }
 
@@ -232,7 +234,7 @@ nav .bp-mark:hover {
 
 .contact-icons * { 
   color: inherit;
-  font-size: 1.4rem;
+  font-size: 1.75rem;
   animation: spreadOut .5s ease-in-out;
   margin: 0 5px;
 }
@@ -252,40 +254,66 @@ nav .bp-mark:hover {
 }
 
 article.case-study {
-  font-size: 1.2rem;
   margin: 0 auto;
-  padding: 0 20px;
-  max-width: 800px;
+  padding: 0 25px;
+  max-width: 1200px;
   width: 100%;
 }
 
-article.case-study p {
-  margin: 1.6rem 0;
-  line-height: 1.6rem;
+article.case-study > * {
+  margin: .8rem 0;
+}
+
+article.case-study h2 {
+  font-size: 2.75rem;
+  margin-top: 5.5rem;
 }
 
 article.case-study h3 {
-  color: var(--color-pomegranate);
+  font-size: 1.65rem;
+  color: black;
+  margin-top: 2.25rem;
+}
+
+article.case-study h4 {
+  font-size: 1.4rem;
+  color: var(--color-flamingo);
+}
+
+article.case-study p {
+  line-height: 1.4rem;
+}
+
+article.case-study ul {
+  margin-left: 3rem;
+}
+
+article.case-study li {
+  line-height: 2rem;
+}
+
+article.case-study li::before {
+  margin-left: -1rem;
+  width: .8rem;
+  display: inline-block;
+  content: "• ";
+  color: var(--color-claret);
 }
 
 @media (max-width: 600px) {
   .team-members {
     flex-flow: column nowrap;
     align-items: center;
-    justify-content: start;
+    justify-content: flex-start;
     height: auto;
   }
 
-  .learn-more {
-    justify-content: start;
-  }
-
   .learn-more h2 {
-    font-size: 1.25rem;
+    font-size: 2rem;
   }
 
   .banner { 
-    padding: 15px;
+    padding: 30px 15px;
   }
 
   .banner h1 { 
