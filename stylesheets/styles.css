@@ -31,6 +31,9 @@ html {
 body {
   font-family: var(--font-family-content);
   height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
 }
 
 h1, h2, h3, h4 {
@@ -119,7 +122,7 @@ nav .bp-mark {
 
 .banner.home {
   background-color: var(--color-buttercup);
-  padding: 5% 5%;
+  padding: 5%;
 }
 
 .banner h1 {
@@ -183,7 +186,6 @@ nav .bp-mark {
   color: white;
   background-color: var(--color-flamingo);
 
-  display: -webkit-box;
   display: flex;
   justify-content: space-around;
   height: 100%;
@@ -217,12 +219,14 @@ nav .bp-mark {
 .contact-icons {
   display: flex;
   justify-content: center;
+  margin-top: 8px;
 }
 
-.contact-icons img {
-  width: 30px;
+.contact-icons * { 
+  color: inherit;
+  font-size: 1.4rem;
   animation: spreadOut .5s ease-in-out;
-  margin: 0 10px;
+  margin: 0 6px;
 }
 
 @keyframes spreadOut {
@@ -231,12 +235,12 @@ nav .bp-mark {
   }
 
   100% {
-    margin: 0 10px;
+    margin: 0 6px;
   }
 }
 
 .contact-icons a:hover {
-  filter: brightness(0) saturate(100%) invert(15%) sepia(36%) saturate(4703%) hue-rotate(313deg) brightness(87%) contrast(98%);
+  color: var(--color-claret);
 }
 
 article.case-study {
@@ -254,10 +258,6 @@ article.case-study p {
 
 article.case-study h3 {
   color: var(--color-pomegranate);
-}
-
-article.case-study img {
-  width: 100%;
 }
 
 @media (max-width: 600px) {
