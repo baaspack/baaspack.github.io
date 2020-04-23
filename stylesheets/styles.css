@@ -261,6 +261,10 @@ article.case-study h3 {
   color: var(--color-pomegranate);
 }
 
+article.case-study img {
+  width: 100%;
+}
+
 @media (max-width: 400px) {
   .banner h1 {
     word-spacing: 100vw;
@@ -274,8 +278,8 @@ article.case-study h3 {
   }
 
   .learn-more h2 {
-    margin-top: 1.5rem;
-    font-size: 1.5rem;
+    margin-top: 1.25rem;
+    font-size: 1.25rem;
   }
 
 
@@ -288,5 +292,6 @@ article.case-study h3 {
 
   .banner.case-study p {
     width: 90%;
+    max-height: 100%;
   }
 }
