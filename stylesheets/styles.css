@@ -103,34 +103,31 @@ nav .bp-mark {
 }
 
 .banner {  
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  padding-top: 12vh;
-  padding-bottom: 3vh;
+  padding: 13vh 0;
 }
 
 .banner img {
+  display: block;
+  height: 100%;
   max-width: 100%;
+  margin: 0 auto;
 }
 
 .banner h1 {
   color: white;
   font-size: 5.725rem;
-  margin-top: 1.5vh;
   text-align: center;
 }
 
 .banner.case-study {
   background-color: var(--color-flamingo);
-  height: 45vh;
-  max-height: 700px
+  max-height: 600px;
 }
 
 .banner.case-study p {
   color: white;
   font-size: 1.75rem;
-  margin-top: 6.25vh;
+  margin: 4vh auto 0 ;
   width: 50%;
   text-align: center;
 }
@@ -288,11 +285,11 @@ article.case-study img {
   }
 
   .banner { 
-    padding-top: 3vh;
+    padding: 3vh 10px;
   }
 
   .banner h1 { 
-    font-size: 4.5rem;
+    font-size: 3rem;
   }
 
   .banner.case-study p {
@@ -300,3 +297,4 @@ article.case-study img {
     margin-top: 3vh;
   }
 }
+
