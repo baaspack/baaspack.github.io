@@ -203,12 +203,12 @@ nav .bp-mark {
   min-width: 200px;
   max-width: 400px;
   padding: 10px;
+  min-height: 0;
 }
 
 .team-member-img {
   border: 3.5px solid white;
   border-radius: 50%;
-
   max-height: 250px;
   max-width: 100%;
   margin-bottom: 10px;
