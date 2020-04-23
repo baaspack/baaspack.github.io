@@ -186,6 +186,7 @@ nav .bp-mark {
   display: flex;
   justify-content: space-around;
   flex-grow: 1;
+  height: 100%;
     
   text-align: center;
 }
@@ -203,7 +204,6 @@ nav .bp-mark {
   min-width: 200px;
   max-width: 400px;
   padding: 10px;
-  min-height: 0;
 }
 
 .team-member-img {
