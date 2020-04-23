@@ -101,12 +101,12 @@ nav li:last-child {
 
 nav .bp-mark {
   height: 65px;
-  transition: .2s;
+  transition: .2s ease-in-out;
   backface-visibility: hidden;
 }
 
 nav .bp-mark:hover {
-  transform: scale(1.05);
+  transform: scale(1.1);
   backface-visibility: hidden;
 }
 
