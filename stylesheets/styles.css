@@ -62,7 +62,7 @@ h4 {
 a {
   color: var(--color-link);
   text-decoration: none;
-  transition: 200ms;
+  transition: .2s;
 }
 
 a:hover {
@@ -96,10 +96,18 @@ nav li {
 
 nav li:last-child {
   margin-left: auto;
+  font-size: 3rem;
 }
 
 nav .bp-mark {
   height: 65px;
+  transition: .2s;
+  backface-visibility: hidden;
+}
+
+nav .bp-mark:hover {
+  transform: scale(1.05);
+  backface-visibility: hidden;
 }
 
 .box {
@@ -187,7 +195,6 @@ nav .bp-mark {
   background-color: var(--color-flamingo);
 
   flex: 1 0 auto;
-
   display: flex;
   justify-content: space-around;
   height: 100%;
