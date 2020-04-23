@@ -214,7 +214,7 @@ nav .bp-mark:hover {
 .team-member {
   min-width: 200px;
   max-width: 400px;
-  padding: 10px;
+  margin-bottom: 10px;
 }
 
 .team-member-img {
@@ -228,7 +228,7 @@ nav .bp-mark:hover {
 .contact-icons {
   display: flex;
   justify-content: center;
-  margin-top: 8px;
+  margin: 8px 0;
 }
 
 .contact-icons * { 
