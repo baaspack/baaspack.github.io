@@ -266,16 +266,19 @@ article.case-study > * {
 
 article.case-study h2 {
   font-size: 2.75rem;
+  line-height: 3rem;
   margin-top: 5.5rem;
 }
 
 article.case-study h3 {
   font-size: 1.65rem;
   color: black;
-  margin-top: 2.25rem;
+  margin-top: 2.5rem;
 }
 
 article.case-study h4 {
+  margin-top: 2.5rem;
+  line-height: 1.4rem;
   font-size: 1.4rem;
   color: var(--color-flamingo);
 }
