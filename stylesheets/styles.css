@@ -69,14 +69,10 @@ a.active-link {
   text-decoration: underline;
 }
 
-nav {
-  height: 80px;
-}
-
 nav ul {
   display: flex;
 
-  height: 100%;
+  height: 80px;
 
   font-family: var(--font-family-header);
   font-size: 1.23rem;
@@ -103,12 +99,12 @@ nav .bp-mark {
 }
 
 .banner {  
-  padding: 13vh 0;
+  padding: 9% 0;
 }
 
 .banner img {
   display: block;
-  height: 100%;
+  max-height: 500px;
   max-width: 100%;
   margin: 0 auto;
 }
@@ -127,7 +123,7 @@ nav .bp-mark {
 .banner.case-study p {
   color: white;
   font-size: 1.75rem;
-  margin: 4vh auto 0 ;
+  margin: 5% auto 0;
   width: 50%;
   text-align: center;
 }
@@ -138,8 +134,7 @@ nav .bp-mark {
 
 .banner.home {
   background-color: var(--color-buttercup);
-  padding: 10vh 5%;
-  max-height: 700px;
+  padding: 5% 5%;
 }
 
 .learn-more {
@@ -263,12 +258,6 @@ article.case-study img {
   width: 100%;
 }
 
-@media (max-width: 400px) {
-  .banner h1 {
-    word-spacing: 100vw;
-  }
-}
-
 @media (max-width: 600px) {
   .team-members {
     flex-flow: column;
@@ -285,7 +274,7 @@ article.case-study img {
   }
 
   .banner { 
-    padding: 3vh 10px;
+    padding: 15px;
   }
 
   .banner h1 { 
@@ -294,7 +283,7 @@ article.case-study img {
 
   .banner.case-study p {
     width: 90%;
-    margin-top: 3vh;
+    margin-top: 3%;
   }
 }
 
