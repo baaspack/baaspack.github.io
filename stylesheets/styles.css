@@ -177,6 +177,7 @@ nav .bp-mark {
   flex-flow: column nowrap;
   justify-content: flex-start;
   flex-grow: 1;
+  height: 100%;
 }
 
 .team-members {
@@ -186,7 +187,6 @@ nav .bp-mark {
   display: flex;
   justify-content: space-around;
   flex-grow: 1;
-  height: 100%;
     
   text-align: center;
 }
@@ -201,7 +201,6 @@ nav .bp-mark {
 }
 
 .team-member {
-  background-color: var(--color-flamingo);
   min-width: 200px;
   max-width: 400px;
   padding: 10px;
