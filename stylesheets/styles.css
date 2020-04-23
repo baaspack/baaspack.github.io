@@ -177,14 +177,13 @@ nav .bp-mark {
   height: 100%;
 }
 
-
 .team-members {
   color: white;
   background-color: var(--color-flamingo);
 
   display: flex;
   justify-content: space-around;
-  flex-grow: 1;
+  height: 100%;
     
   text-align: center;
 }
