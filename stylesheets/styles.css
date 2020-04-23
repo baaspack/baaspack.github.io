@@ -175,7 +175,6 @@ nav .bp-mark {
 .box {
   display: flex;
   flex-flow: column nowrap;
-  justify-content: flex-start;
   height: 100%;
 }
 
@@ -263,7 +262,6 @@ article.case-study img {
   .team-members {
     flex-flow: column nowrap;
     align-items: center;
-    justify-content: start;
     height: auto;
   }
 
