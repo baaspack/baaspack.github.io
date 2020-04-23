@@ -99,7 +99,14 @@ nav .bp-mark {
   height: 65px;
 }
 
-.banner {  
+.box {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+.banner { 
   padding: 9% 0;
 }
 
@@ -108,6 +115,11 @@ nav .bp-mark {
   max-height: 500px;
   max-width: 100%;
   margin: 0 auto;
+}
+
+.banner.home {
+  background-color: var(--color-buttercup);
+  padding: 5% 5%;
 }
 
 .banner h1 {
@@ -133,15 +145,10 @@ nav .bp-mark {
   background-color: var(--color-flamingo);
 }
 
-.banner.home {
-  background-color: var(--color-buttercup);
-  padding: 5% 5%;
-}
-
 .learn-more {
   background-color: var(--color-pomegranate);
-  height: 100%;
 
+  flex: 1 0 auto;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -172,17 +179,11 @@ nav .bp-mark {
   background-color: var(--color-puerto-rico);
 }
 
-.box {
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: start;
-  height: 100%;
-}
-
 .team-members {
   color: white;
   background-color: var(--color-flamingo);
 
+  display: -webkit-box;
   display: flex;
   justify-content: space-around;
   height: 100%;
