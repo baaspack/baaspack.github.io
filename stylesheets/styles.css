@@ -183,7 +183,7 @@ nav .bp-mark {
 
   display: flex;
   justify-content: space-around;
-  flex-grow: 1 100%;
+  flex-grow: 1;
     
   text-align: center;
 }
@@ -204,6 +204,7 @@ nav .bp-mark {
 }
 
 .team-member-img {
+  display: block;
   border: 3.5px solid white;
   border-radius: 50%;
 
@@ -260,8 +261,7 @@ article.case-study img {
 
 @media (max-width: 600px) {
   .team-members {
-    flex-flow: column nowrap;
-    align-items: center;
+    display: block;
   }
 
   .learn-more {
