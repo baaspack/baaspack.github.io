@@ -606,9 +606,11 @@
         how to support easy deployment of multiple Backpacks within one Backpack system. We considered two options for
         expanding our architecture: a multi-tenant infrastructure and a multi-instance infrastructure.</p>
       <h3>Multi-tenant vs. multi-instance</h3>
-      <h4>The Multi-Tenant Architecture <img alt="" src="images/case-study/image1.png"
+      <h4>The Multi-Tenant Architecture</h4>
+        
+        <img alt="" src="images/case-study/image1.png"
           style="width: 720.00px; height: 321.33px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
-          title=""></h4>
+          title="">
       <p>In the multi-tenant architecture, a single Backpack instance would become the backend for multiple
         web applications. A single Express API would handle requests from frontends of each web app, routing them to a
         single MongoDB server which would persist data for each web application in a separate database within the same
