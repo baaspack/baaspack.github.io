@@ -84,9 +84,7 @@
         with it. In contrast, a backend manages data and handles business logic: it provides the information and
         functionality that underpins the user's frontend experience.</p>
 
-      <p><img alt="" src="images/case-study/image7.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image7.png" title=""></p>
 
       <p>So what does 'managing data' and 'handling business logic' actually mean?
         There are a host of tasks that comprise backend functionality, including user authentication, data persistence,
@@ -103,9 +101,7 @@
         Frontend developers integrate these services into their web applications by making calls to the
         API.</p>
 
-      <p><img alt="" src="images/case-study/image5.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image5.png" title=""></p>
 
       <p>To facilitate interaction with the API, a BaaS typically provides a Software Development Kit
         (SDK). An SDK is a library that provides convenience methods for interacting with the exposed API. A frontend
@@ -132,9 +128,7 @@
         and PaaS, but in addition, handles backend functionality as described above, so that a developer's main
         responsibility is frontend code.</p>
 
-      <p><img alt="" src="images/case-study/image20.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image20.png" title=""></p>
 
       <p>With all of these services, there are trade-offs between convenience and control.
         Compared to the other services mentioned above, a BaaS handles more of an application's core functionality
@@ -178,9 +172,7 @@
         characteristics, beginning with the core Backpack application and tracing the expansion of the system from a
         single app to a containerized, scalable, multi-instance system.</p>
       <h3>Building a generic backend: the Backpack core app</h3>
-      <p><img alt="" src="images/case-study/image13.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image13.png" title=""></p>
 
       <p>At the core of Backpack's infrastructure is the Backpack API. Built with
         JavaScript using Express, it is a generic backend that can be adapted to fit a frontend developer's needs.
@@ -556,9 +548,7 @@
         they are faster to spin up and require fewer system resources to run. Spin-up speed is critical for
         Backpack since entire application stacks need to be created on the fly.</p>
 
-      <p><img alt="" src="images/case-study/image3.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image3.png" title=""></p>
 
       <p>Once Docker is installed on a machine, the Docker Daemon can be used to run Docker
         containers on it. The Docker Daemon spins up and tears down containers using Docker images that specify how the
@@ -586,9 +576,7 @@
       <p>Finally, to run our custom Express API as a container, we built a custom Docker image
         to run our application on top of a NodeJS image.</p>
 
-      <p><img alt="" src="images/case-study/image18.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image18.png" title=""></p>
 
 
       <p>Containerizing Backpack in this way dramatically simplifies the work required to deploy
@@ -607,10 +595,8 @@
         expanding our architecture: a multi-tenant infrastructure and a multi-instance infrastructure.</p>
       <h3>Multi-tenant vs. multi-instance</h3>
       <h4>The Multi-Tenant Architecture</h4>
-        
-        <img alt="" src="images/case-study/image1.png"
-          
-          title="">
+
+      <img alt="" src="images/case-study/image1.png" title="">
       <p>In the multi-tenant architecture, a single Backpack instance would become the backend for multiple
         web applications. A single Express API would handle requests from frontends of each web app, routing them to a
         single MongoDB server which would persist data for each web application in a separate database within the same
@@ -654,9 +640,7 @@
           significant security vulnerability.</li>
       </ol>
       <h4>The Multi-Instance Architecture</h4>
-      <p><img alt="" src="images/case-study/image4.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image4.png" title=""></p>
 
       <p>In contrast, a multi-instance architecture would maximize isolation between
         applications while separating routing and administration logic from the core Backpack API into dedicated
@@ -696,18 +680,14 @@
         fourth container running Nginx was part of the deployment, but was not connected to the bridge network since it
         did not need to communicate directly with the other components in the deployment. The API and Nginx servers both
         exposed ports to listen to requests.</p>
-      <p><img alt="" src="images/case-study/image22.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image22.png" title=""></p>
 
       <p>In order to implement a multi-instance architecture that could support multiple Backpacks in a
         single deployment, we needed to group our single-instance components into a logical unit, a
         stack of containerized services, that we could dynamically spin up or
         tear down.</p>
 
-      <p><img alt="" src="images/case-study/image16.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image16.png" title=""></p>
 
       <p>Figuring out how to deploy multiple Backpacks to a single server introduced two new
         challenges:</p>
@@ -724,9 +704,7 @@
         introduce additional complexity to our system's communication and routing needs as individual Backpack
         stacks could now live on any host machine within a deployment.</p>
 
-      <p><img alt="" src="images/case-study/image14.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image14.png" title=""></p>
 
       <p>Finally, if we're already going to scale out a Backpack deployment across
         multiple servers and deal with the networking challenges that that introduces, can we take our system a step
@@ -735,9 +713,7 @@
         like all of our Mongo services to run from that server, moving the Nginx services to a less robust machine.
       </p>
 
-      <p><img alt="" src="images/case-study/image8.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image8.png" title=""></p>
 
       <p>To accomplish this, there are quite a few things we need to do:</p>
       <a></a><a></a>
@@ -789,9 +765,7 @@
         to scale our system. A node in Swarm terminology is a
         machine running Docker that is a member of the swarm. Nodes can be managers or workers.</p>
 
-      <p><img alt="" src="images/case-study/image17.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image17.png" title=""></p>
 
       <p>When you configure a swarm, you specify its desired state--for each service, how many replicas or
         running tasks it requires, the ports it exposes, and the networks it belongs to. A
@@ -801,26 +775,20 @@
         Here
         we can see one Backpack stack that has been spread out across four worker nodes:</p>
 
-      <p><img alt="" src="images/case-study/image15.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image15.png" title=""></p>
 
       <p>If some of our services are deployed on different nodes, as in the diagram above, how will they be
         able to communicate with each other? Swarm provides us with overlay networks that
         can span across nodes. Each service is given a unique name so that it can be
         located by other services in the swarm.</p>
 
-      <p><img alt="" src="images/case-study/image19.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image19.png" title=""></p>
 
       <p>As we add more Backpacks to our system, Swarm will continue figuring out how to deploy
         each Backpack's services across the nodes and take care of the networking within Backpack stacks using
         overlay networks.</p>
 
-      <p><img alt="" src="images/case-study/image11.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image11.png" title=""></p>
 
       <p>By choosing the right tool, Docker Swarm, we have accomplished our first three to-do
         items. We now have multiple Backpacks living on multiple nodes, with overlay networks for handling communication
@@ -844,9 +812,7 @@
         ingress routing mesh will ensure that requests to those ports on any node are forwarded to the appropriate
         service.</p>
 
-      <p><img alt="" src="images/case-study/image12.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image12.png" title=""></p>
 
       <p>However, once we have multiple Backpack instances, routing becomes more complicated.
         The ports each container should expose are specified in the Stack file that we use to spin up each Backpack
@@ -857,9 +823,7 @@
         run
         on the same system and listen for requests if they all publish the same ports through the routing mesh?</p>
 
-      <p><img alt="" src="images/case-study/image21.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image21.png" title=""></p>
 
       <p>A common solution to this problem is to use a reverse proxy that can receive requests
         from outside the swarm and route the requests to the appropriate service within the swarm using configuration
@@ -870,9 +834,7 @@
         routing rules, telling it to look for that name in the URL of incoming requests to route requests to the right
         place.</p>
 
-      <p><img alt="" src="images/case-study/image9.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image9.png" title=""></p>
 
       <p>However, we have not solved all of our routing problems yet. One of the key
         requirements of our system is that it is easy to spin up and tear down Backpacks. This means that we need to be
@@ -944,9 +906,7 @@
         error streams from the CLI are piped back to the admin panel to confirm that the entire stack is spinning up
         correctly. Backpack stacks can also be torn down with a click of a button using a similar process.</p>
 
-      <p><img alt="" src="images/case-study/image2.gif"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image2.gif" title=""></p>
 
       <p>We built the admin panel as another containerized application running in the swarm.
         We relied on Redis again to provide session storage, Express as a framework to build the backend, and
@@ -957,9 +917,7 @@
         between
         each entity we wanted to store in the database.</p>
 
-      <p><img alt="" src="images/case-study/image23.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image23.png" title=""></p>
       <h4>Data Management</h4>
       <p>Our final challenge was giving frontend developers a convenient way to interact with
         collection and user data for their applications. Since each Backpack was designed as a generic backend, we
@@ -976,9 +934,7 @@
         However, we wanted to avoid exposing these vulnerable endpoints to the internet, so we explored some other
         options.</p>
 
-      <p><img alt="" src="images/case-study/image6.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image6.png" title=""></p>
       <p>Another solution would be to connect the admin panel directly to each Backpack's MongoDB
         instance so that the admin panel would have full access to the database independent of the Express API.
         However, with our current architecture, each Backpack's MongoDB service
@@ -996,9 +952,7 @@
         unique
         service name assigned in the stack file.</p>
 
-      <p><img alt="" src="images/case-study/image10.png"
-          
-          title=""></p>
+      <p><img alt="" src="images/case-study/image10.png" title=""></p>
 
       <p>Because this second port is only accessible from the admin panel's backend, we can securely
         expose the additional user management functionality we would not want normal users to have access to.
