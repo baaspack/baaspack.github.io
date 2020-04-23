@@ -140,7 +140,9 @@ nav .bp-mark {
   color: white;
   margin-top: 2.5rem;
   font-size: 2.5rem;
+  text-align: center;;
 }
+
 .learn-more a {
   background-color: white;
   border-radius: 5px;
@@ -227,11 +229,18 @@ article.case-study h3 {
   .banner h1 {
     word-spacing: 100vw;
   }
+
+
 }
 
 @media (max-width: 600px) {
   .team-members {
     flex-flow: column;
     align-items: center;
+  }
+
+  .learn-more h2 {
+    margin-top: 1.5rem;
+    font-size: 1.5rem;
   }
 }
