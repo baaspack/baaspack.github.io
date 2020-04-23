@@ -183,8 +183,8 @@ nav .bp-mark {
 
   display: flex;
   justify-content: space-around;
-  flex-grow: 1;
-
+  height: 100%;
+  
   text-align: center;
 }
 
@@ -260,7 +260,7 @@ article.case-study img {
 
 @media (max-width: 600px) {
   .team-members {
-    flex-flow: column;
+    flex-flow: column nowrap;
     align-items: center;
   }
 
