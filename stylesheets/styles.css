@@ -30,6 +30,7 @@ html {
 
 body {
   font-family: var(--font-family-content);
+  height: 100%;
 }
 
 h1, h2, h3, h4 {
@@ -174,7 +175,8 @@ nav .bp-mark {
 .box {
   display: flex;
   flex-flow: column nowrap;
-  height: 100%;
+  justify-content: flex-start;
+  flex-grow: 1;
 }
 
 .team-members {
@@ -183,7 +185,7 @@ nav .bp-mark {
 
   display: flex;
   justify-content: space-around;
-  height: 100%;
+  flex-grow: 1;
     
   text-align: center;
 }
@@ -198,7 +200,6 @@ nav .bp-mark {
 }
 
 .team-member {
-  display: block;
   min-width: 200px;
   max-width: 400px;
   padding: 10px;
