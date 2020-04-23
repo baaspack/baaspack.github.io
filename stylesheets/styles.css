@@ -186,6 +186,8 @@ nav .bp-mark {
   color: white;
   background-color: var(--color-flamingo);
 
+  flex: 1 0 auto;
+
   display: flex;
   justify-content: space-around;
   height: 100%;
@@ -226,7 +228,7 @@ nav .bp-mark {
   color: inherit;
   font-size: 1.4rem;
   animation: spreadOut .5s ease-in-out;
-  margin: 0 6px;
+  margin: 0 5px;
 }
 
 @keyframes spreadOut {
@@ -235,7 +237,7 @@ nav .bp-mark {
   }
 
   100% {
-    margin: 0 6px;
+    margin: 0 5px;
   }
 }
 
