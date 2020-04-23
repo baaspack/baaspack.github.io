@@ -286,7 +286,7 @@ article.case-study h4 {
 article.case-study img {
   display: block;
   margin: 0 auto;
-  max-width: 100%;;
+  max-width: 100%;
 }
 
 article.case-study p {
@@ -310,11 +310,32 @@ article.case-study li::before {
 }
 
 @media (max-width: 600px) {
+  nav ul {
+    font-size: 1rem;
+    height: 60px;
+  }
+
+  nav li:last-child {
+    font-size: 2rem;
+  }
+
+  nav .bp-mark {
+    height: 50px;
+  }
+
   .team-members {
     flex-flow: column nowrap;
     align-items: center;
     justify-content: flex-start;
     height: auto;
+  }
+
+  .team-member {
+    margin-bottom: 50px;
+  }
+
+  .team-member-img {
+    max-height: 300px;
   }
 
   .learn-more h2 {
