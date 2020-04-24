@@ -296,7 +296,7 @@ article.case-study h5 {
 
 article.case-study img {
   display: block;
-  margin: 0 auto;
+  margin: 2rem auto;
   max-width: 100%;
 }
 
