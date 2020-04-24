@@ -261,6 +261,7 @@ article.case-study {
   padding: 0 25px;
   max-width: 1200px;
   width: 70%;
+  margin-bottom: 10%;
 }
 
 article.case-study > * {

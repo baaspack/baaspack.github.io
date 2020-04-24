@@ -53,6 +53,7 @@ const createOutline = (headers) => {
 }
 
 const scroller = () => {
+  let allowScrollUpdate = true;
   let lastScrollPosition = 0;
   let tick = false;
   let activeSection = null;
@@ -81,7 +82,10 @@ const scroller = () => {
         if (activeSection === prevActiveSection) { return; }
         progress.parentNode.classList.add('visible');
 
-        setActive(progress, activeSection);
+        if (allowScrollUpdate) {
+          setActive(progress, activeSection);
+        }
+        allowScrollUpdate = true;
       }, 150);
 
       tick = true;
@@ -96,6 +100,7 @@ const scroller = () => {
 
     const targetHeader = document.getElementById(parentNode.dataset.id);
 
+    allowScrollUpdate = false;
     setActive(progress, targetHeader);
   });
 
