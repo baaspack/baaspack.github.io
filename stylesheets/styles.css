@@ -316,6 +316,31 @@ article.case-study li::before {
   color: var(--color-claret);
 }
 
+table.table {
+  margin: 0 auto;
+  width: 80%;
+}
+
+table.table tr {
+  border-bottom: 1px solid #ccc;
+  line-height: 1.5rem;
+}
+
+table.table th {
+  font-weight: bold;
+}
+
+table.table th, 
+table.table td {
+  text-align: left;
+  padding: 4px;
+}
+
+table.http-verbs th {
+  width: 33%;
+}
+
+
 @media (max-width: 600px) {
   nav ul {
     font-size: 1rem;
