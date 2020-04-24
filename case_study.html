@@ -543,7 +543,7 @@
         takes less than a minute.</p>
       <p>===Another gif of uploading a frontend zip and hitting the website</p>
       <p>Multiple backpacks can be hosted in the same deployment.</p>
-      <p>====Another gif of adding a second and third backpack </p>
+      <p>===Another gif of adding a second and third backpack </p>
       <p>In the remaining sections, we explain how we packaged our core API with its dependencies on our way to building
         a multi-instance infrastructure that supports multiple backends on a single Backpack deployment. We outline the
         challenges we faced in moving from our original single-instance architecture to the full-featured system we
@@ -701,7 +701,7 @@
           <li>&#9744; Spin up / tear down backpack stacks across servers</li>
           <li>&#9744; Manage communication within stacks across servers</li>
           <li>&#9744; Route requests from the internet to the right backpack</li>
-          <li>&#9744; make it <span class="emphasize">easy</span> to spin up / tear down backpack stacks</li>
+          <li>&#9744; Make it <span class="emphasize">easy</span> to spin up / tear down backpack stacks</li>
           <li>&#9744; Manage backpack users & data from a centralized admin panel</li>
         </ul>
       </div>
@@ -751,9 +751,7 @@
         across the nodes and take care of the networking within Backpack stacks using overlay networks.</p>
       <p><img alt="Five Backpack stacks assigned across full nodes" src="images/case-study/assigning-tasks-5.png"
           title=""></p>
-      <p>By choosing the right tool, Docker Swarm, we have accomplished our first three to-do items. We now have
-        multiple Backpacks living on multiple nodes, with overlay networks for handling communication between their
-        services.</p>
+      <p>By choosing the right tool, Docker Swarm, we can check off our next two to dos.</p>
 
       <div class="todos">
         <ul>
@@ -761,6 +759,10 @@
           <li class="done-now">&#9745; Manage communication within stacks across servers</li>
         </ul>
       </div>
+
+      <p> We now have
+        multiple Backpacks living on multiple nodes, with overlay networks for handling communication between their
+        services.</p>
 
       <h4 id="routing">Routing</h4>
       <p>Our next task is to route requests from outside the swarm to the correct Backpack. While we can use overlay
@@ -816,14 +818,14 @@
         automatically from Let's Encrypt. This creates a slight delay when we spin up a new Backpack (less than a
         minute), but is a worthwhile trade-off for ensuring that communication with Backpack is encrypted. </p>
 
+      <p>Adding a Traefik reverse proxy allows us to check routing off our list, which leaves us with the task of
+        handling system administration and swarm management.</p>
+
       <div class="todos">
         <ul>
           <li class="done-now">&#9745; Route requests from the internet to the right backpack</li>
         </ul>
       </div>
-
-      <p>Adding a Traefik reverse proxy allows us to check routing off our list, which leaves us with the task of
-        handling system administration and swarm management.</p>
 
       <h3 id="admin-panel">Admin Panel</h3>
       <p>When we chose a multi-instance architecture, we prioritized isolation between Backpacks and the separation of
@@ -895,18 +897,18 @@
         reflect database changes on the frontend of the admin panel. This requires a custom Redux middleware that
         automatically updates the state of the admin panel based on the messages broadcast from the Backpack's websocket
         connection.</p>
-
+        
+      <p>With this final feature, the last items on our Backpack to-do list can be checked off. </p>
       <div class="todos">
         <ul>
           <li class="done-now">&#9745; Spin up / tear down backpack stacks</li>
           <li class="done-now">&#9745; Spin up / tear down backpack stacks across servers</li>
           <li class="done-now">&#9745; Manage communication within stacks across servers</li>
           <li class="done-now">&#9745; Route requests from the internet to the right backpack</li>
-          <li class="done-now">&#9745; make it <span class="emphasize">easy</span> to spin up / tear down backpack stacks</li>
+          <li class="done-now">&#9745; Make it <span class="emphasize">easy</span> to spin up / tear down backpack stacks</li>
           <li class="done-now">&#9745; Manage backpack users & data from a centralized admin panel</li>
         </ul>
       </div>
-      <p>With this final feature, the last items on our Backpack to-do list can be checked off. </p>
 
       <h2 id="future-work">Future Work</h2>
       <ul class="bullets">
