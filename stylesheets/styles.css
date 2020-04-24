@@ -358,8 +358,9 @@ table.http-verbs th {
   width: 33%;
 }
 
-code {
+article.case-study code{
   font-family: var(--font-family-code);
+  word-wrap: break-word;
 }
 
 @media (max-width: 600px) {
