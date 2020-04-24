@@ -119,6 +119,7 @@ nav .bp-mark:hover {
 
 .banner { 
   padding: 9% 0;
+  position: relative;
 }
 
 .banner img {
@@ -143,12 +144,13 @@ nav .bp-mark:hover {
   background-color: var(--color-flamingo);
   max-height: 500px;
   margin-bottom: 150px;
+  z-index: 1;
 }
 
 .banner.case-study p {
   color: white;
   font-size: 1.75rem;
-  margin: 2.5% auto 0;
+  margin: 2.5% auto;
   width: 50%;
   text-align: center;
 }
@@ -255,10 +257,10 @@ nav .bp-mark:hover {
 }
 
 article.case-study {
-  margin: 0 auto;
+  margin-left: 20%;
   padding: 0 25px;
   max-width: 1200px;
-  width: 100%;
+  width: 70%;
 }
 
 article.case-study > * {
@@ -358,9 +360,61 @@ table.http-verbs th {
   width: 33%;
 }
 
-article.case-study code{
+article.case-study code {
   font-family: var(--font-family-code);
   word-wrap: break-word;
+}
+
+aside {
+  position: fixed;
+  width: 300px;
+  opacity: 0;
+  transition: .2s ease-in-out;
+}
+
+aside.visible {
+  opacity: 1;
+}
+
+aside li {
+  display: none;
+}
+
+aside .visible > li,
+aside .visible > ul > li {
+  display: block;
+}
+
+#progress,
+#progress ul {
+  font-size: .9rem;
+  margin-left: 1rem;
+}
+
+#progress li {
+  line-height: 2rem;
+}
+
+#progress li.active > a {
+  font-weight: bold;
+}
+
+@media (max-width: 1000px) {
+  article.case-study {
+    margin-left: auto;
+    margin-right: 20px;
+  }
+}
+
+@media (max-width: 800px) {
+  article.case-study {
+    margin: 0 auto;
+    width: 90%;
+  }
+
+  aside {
+    display: none;
+  }
 }
 
 @media (max-width: 600px) {
