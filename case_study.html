@@ -649,7 +649,7 @@
         particular request should be routed to. So how can we have all Backpack instances run on the same system and
         listen for requests if they all publish the same ports through the routing mesh?</p>
       <p><img alt="The ingress routing mesh cannot handle port conflicts"
-          src="images/case-study/port-conflicts-routing-2.png" title=""></p>
+          src="images/case-study/port-conflicts-routing-3.png" title=""></p>
       <p>A common solution to this problem is to use a reverse proxy that can receive requests from outside the swarm
         and route the requests to the appropriate service within the swarm using configuration rules. By running the
         proxy as another service within the swarm on the same overlay network as each Backpack's Express API & Nginx
