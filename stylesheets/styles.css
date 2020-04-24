@@ -406,7 +406,16 @@ aside .visible > ul > li {
 }
 
 #progress li {
+  font-size: 1.1rem;
   line-height: 2rem;
+}
+
+#progress a {
+  color: var(--color-flamingo);
+}
+
+#progress a:hover {
+  color: var(--color-claret);
 }
 
 #progress li.active > a {
