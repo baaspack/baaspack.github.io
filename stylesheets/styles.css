@@ -306,13 +306,13 @@ article.case-study ul {
 
 article.case-study li {
   line-height: 2rem;
+  padding-left: 1ch;
+  text-indent: -2ch;
 }
 
 article.case-study li::before {
-  margin-left: -1rem;
-  width: .8rem;
-  display: inline-block;
-  content: "• ";
+  content: "•";
+  padding-right: 1ch;
   color: var(--color-claret);
 }
 
@@ -339,7 +339,6 @@ table.table td {
 table.http-verbs th {
   width: 33%;
 }
-
 
 @media (max-width: 600px) {
   nav ul {
