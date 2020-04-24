@@ -314,10 +314,14 @@ article.case-study ol {
   margin-left: 3rem;
 }
 
-article.case-study li {
-  line-height: 2rem;
+article.case-study li {  
+  line-height: 1.4rem;
   padding-left: 1ch;
   text-indent: -2ch;
+}
+
+article.case-study li + li {
+  margin-top: .5rem;
 }
 
 article.case-study ul.bullets li::before {
@@ -333,7 +337,7 @@ article.case-study ol li {
 }
 
 article.case-study ol li::before {
-  content: counter(list-counter)".";
+  content: counter(list-counter) ".";
   padding-right: 2.6ch;
   color: var(--color-claret);
 }
