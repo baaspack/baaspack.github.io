@@ -342,6 +342,19 @@ table.table {
   width: 80%;
 }
 
+table.documentation {
+  width: 90%;
+}
+
+table.documentation thead .method {
+  width: 40%;
+}
+
+table.documentation .method code {
+  font-size: .8rem;
+}
+
+
 table.table tr {
   border-bottom: 1px solid #ccc;
   line-height: 1.5rem;

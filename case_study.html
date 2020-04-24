@@ -151,7 +151,7 @@
       <p>Link to the relevant script files in your HTML files</p> <code
         class="language-html"> &lt;script src="https://admin.yourBackpack.com/sdk.js"&gt;&lt;/script&gt; </code>
       <p>Call the createSdk method from your JavaScript code with the Backpack's unique URL and API key.</p> <code
-        class="language-js">const backpack = createSdk('https://mySweetApp.myDomain.com/', 'aLong&RandomApiKey');</code>
+        class="language-js">const bkpk = createSdk('https://mySweetApp.myDomain.com/', 'aLong&RandomApiKey');</code>
       <p>The object returned by createSdk exposes Backpack's functionality through modules that each represent a core
         Backpack component: collection management, data persistence, user authentication, file storage, and realtime
         communication over websockets.</p>
@@ -169,26 +169,26 @@
         collections are created, their full set of RESTful API endpoints are dynamically added to the existing routes so
         Backpack can handle requests for the new collections without requiring the entire application to restart to pick
         up the new routes.</p>
-      <p>By calling <code class="language-js">backpack.db.createNewCollection(collectionName)</code> with a string
+      <p>By calling <code class="language-js">bkpk.db.createNewCollection(collectionName)</code> with a string
         representing a collection's name, developers can create a new collection that they can subsequently interact
         with through the SDK's other db methods:</p>
       <ul>
-        <li><code class="language-js">backpack.db.getCollection(collection)</code>: returns a JSON object representing
+        <li><code class="language-js">bkpk.db.getCollection(collection)</code>: returns a JSON object representing
           every database record in a collection as an array.</li>
-        <li><code class="language-js">backpack.db.getResource(collection, id)</code>: returns a JSON object representing
+        <li><code class="language-js">bkpk.db.getResource(collection, id)</code>: returns a JSON object representing
           the database record with the given <code class="language-js">id</code> in the given <code
             class="language-js">collection</code>.</li>
-        <li><code class="language-js">backpack.db.createResource(collection, data)</code>: creates a new database record
+        <li><code class="language-js">bkpk.db.createResource(collection, data)</code>: creates a new database record
           in the given <code class="language-js">collection</code> with the properties represented by <code
             class="language-js">data</code>. Returns a JSON object representing the created database object. </li>
-        <li><code class="language-js">backpack.db.updateResource(collection, id, data)</code>: updates the database
+        <li><code class="language-js">bkpk.db.updateResource(collection, id, data)</code>: updates the database
           record identified by <code class="language-js">collection</code> and <code class="language-js">id</code> with
           the properties provided by <code class="language-js">data</code>. Returns the updated database record.</li>
-        <li><code class="language-js">backpack.db.overwriteResource(collection, id, data)</code>: overwrites the
+        <li><code class="language-js">bkpk.db.overwriteResource(collection, id, data)</code>: overwrites the
           database record identified by <code class="language-js">collection</code> and <code
             class="language-js">id</code> with the properties provided by <code class="language-js">data</code>. Returns
           the updated database record.</li>
-        <li><code class="language-js">backpack.db.deleteResource(collection, id)</code>: deletes the database record
+        <li><code class="language-js">bkpk.db.deleteResource(collection, id)</code>: deletes the database record
           with the given <code class="language-js">id</code> in the given <code class="language-js">collection</code>.
           Returns the deleted database record.</li>
       </ul>
@@ -243,18 +243,33 @@
       <p>Backpack provides built-in authentication. Session tokens for users are stored in cookies and tracked using
         Redis. The auth module exposes methods that allow developers to build workflows that enable users to register,
         login, or logout from their applications:</p>
-      <ul>
-        <li><code class="language-js">backpack.auth.register(email, password)</code>: creates a new user with the given
-          <code class="language-js">email</code> and <code class="language-js">password</code> in the
-          application's Backpack. Returns the new user's database id if successful, validation errors if not.</li>
-        <li><code class="language-js">backpack.auth.login(email, password)</code>: creates a session for the user if
-          given a valid <code class="language-js">email</code> and <code class="language-js">password</code>. A
-          session token is passed back to the frontend via a secure, HttpOnly cookie which will be sent on subsequent
-          requests to the Backpack.</li>
-        <li><code class="language-js">backpack.auth.logout()</code>: destroys the user's session, effectively signing
-          the user out of the web
-          application.</li>
-      </ul>
+      <table class="table documentation">
+        <thead>
+          <tr>
+            <th class="method">Method</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="method"><code class="language-js">bkpk.auth.register(email, password)</code></td> 
+            <td>creates a new user with the given <code class="language-js">email</code> and <code class="language-js">password</code> in the
+            application's Backpack. Returns the new user's database id if successful, validation errors if not.
+            </td>
+          </tr>
+          <tr>
+            <td class="method"><code class="language-js">bkpk.auth.login(email, password)</code></td>
+            <td>creates a session for the user if given a valid <code class="language-js">email</code> and <code class="language-js">password</code>. A
+            session token is passed back to the frontend via a secure, HttpOnly cookie which will be sent on subsequent
+            requests to the Backpack.</td>
+          </tr>
+          <tr>
+            <td class="method"><code class="language-js">bkpk.auth.logout()</code></td> 
+            <td>destroys the user's session, effectively signing
+            the user out of the web application.</td>
+          </tr>
+        </tbody>
+      </table>
       <p>When deployed with a custom domain, Backpack automatically requests SSL certificates from Let's Encrypt to
         encrypt traffic using HTTPS, an essential precaution to take with sensitive information like passwords.</p>
 
@@ -265,25 +280,25 @@
         allows independent scaling of services and simplifies the process of viewing and receiving files. Docker makes
         it easy to persist data using volumes.</p>
       <ul>
-        <li><code class="language-js">backpack.storage.getFile(userId, filename)</code>: returns file from
+        <li><code class="language-js">bkpk.storage.getFile(userId, filename)</code>: returns file from
           <code>current_user_id/filename</code> in the body of the
           response. </li>
-        <li><code class="language-js">backpack.storage.getListOfUserFiles(userId)</code>: returns a JSON object
+        <li><code class="language-js">bkpk.storage.getListOfUserFiles(userId)</code>: returns a JSON object
           containing an array of metadata records
           for the files associated with a user.</li>
-        <li><code class="language-js">backpack.storage.uploadFile(fileFromFormData, filename, bucket)</code>: saves the
+        <li><code class="language-js">bkpk.storage.uploadFile(fileFromFormData, filename, bucket)</code>: saves the
           file in the file system and a
           record of associated user data in the database. Returns a JSON object containing metadata if successful,
           validation errors if not.</li>
-        <li><code class="language-js">backpack.storage.updateFile(currentFilename, newFilename, bucket)</code>:
+        <li><code class="language-js">bkpk.storage.updateFile(currentFilename, newFilename, bucket)</code>:
           overwrites file metadata. Returns a JSON
           object containing metadata if successful, validation errors if not.</li>
-        <li><code class="language-js">backpack.storage.overwriteFile(fileFromFormData, filename)</code>: replaces file
+        <li><code class="language-js">bkpk.storage.overwriteFile(fileFromFormData, filename)</code>: replaces file
           currently saved under
           <code>current_user/filename</code> with <code class="language-js">fileFromFormData</code>. Metadata will not
           be updated. Returns a success message if
           successful, validation error if not.</li>
-        <li><code class="language-js">backpack.storage.deleteFile(filename)</code>: deletes file under
+        <li><code class="language-js">bkpk.storage.deleteFile(filename)</code>: deletes file under
           <code>current_user/filename</code>. Returns metadata and a success
           message if successful, validation errors if not.</li>
       </ul>
