@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Biryani:wght@700;900&family=Lato:ital,wght@0,400;0,700;1,400;1,700&family=Fira+Code&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Biryani:wght@700;900&family=Lato:ital,wght@0,400;0,700;1,400;1,700&family=Fira+Code:wght@400;700&display=swap');
 
 /* colors generated using http://chir.ag/projects/name-that-color */
 :root {
@@ -10,7 +10,7 @@
   --color-claret: #7c1541;
   --font-family-content: Lato, sans-serif;
   --font-family-header: Biryani, sans-serif;
-  --font-family-code: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  --font-family-code: 'Fira Code', source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
   --color-primary: var(--color-buttercup);
   --color-success: var(--color-persian-green);
   --color-danger: var(--color-pomegranate);
@@ -206,6 +206,7 @@ nav .bp-mark:hover {
   color: inherit;
   font-size: 2rem;
 }
+
 .team-members h3 {
   color: inherit;
   font-size: 1.25rem;
@@ -304,15 +305,32 @@ article.case-study ul {
   margin-left: 3rem;
 }
 
+article.case-study ol {
+  counter-reset: list-counter;
+  margin-left: 3rem;
+}
+
 article.case-study li {
   line-height: 2rem;
   padding-left: 1ch;
   text-indent: -2ch;
 }
 
-article.case-study li::before {
+article.case-study ul li::before {
   content: "•";
   padding-right: 1ch;
+  color: var(--color-claret);
+}
+
+article.case-study ol li {
+  counter-increment: list-counter;
+  padding-left: 2.2ch;
+  text-indent: -4ch;
+}
+
+article.case-study ol li::before {
+  content: counter(list-counter)".";
+  padding-right: 2.6ch;
   color: var(--color-claret);
 }
 
@@ -338,6 +356,10 @@ table.table td {
 
 table.http-verbs th {
   width: 33%;
+}
+
+code {
+  font-family: var(--font-family-code);
 }
 
 @media (max-width: 600px) {
