@@ -67,7 +67,8 @@
         typically concerned with how a website or mobile application looks and how users interact with it. In contrast,
         a backend manages data and handles business logic: it provides the information and functionality that underpins
         the user's frontend experience.</p>
-      <p><img alt="" src="images/case-study/image7.png" title=""></p>
+      <p><img alt="Examples of backend providing business logic: authentication, data persistence, file storage"
+          src="images/case-study/backend-logic-examples.png" title=""></p>
       <p>So what does 'managing data' and 'handling business logic' actually mean? There are a host of tasks that
         comprise backend functionality, including user authentication, data persistence, request routing, and file
         storage. Additionally, applications may require support for realtime communication. Finally, after a backend is
@@ -80,7 +81,8 @@
       <p>The basic structure of a BaaS is a backend application that exposes API endpoints to create and access data,
         store and retrieve files, authenticate users, and handle other backend functions. Frontend developers integrate
         these services into their web applications by making calls to the API.</p>
-      <p><img alt="" src="images/case-study/image5.png" title=""></p>
+      <p><img alt="Basic architecture of a BaaS: a front end interacting with a backend through an exposed API"
+          src="images/case-study/baas-architecture.png" title=""></p>
       <p>To facilitate interaction with the API, a BaaS typically provides a Software Development Kit (SDK). An SDK is a
         library that provides convenience methods for interacting with the exposed API. A frontend developer uses the
         SDK to communicate with the backend through its API. For web applications, the SDK is written in JavaScript.
@@ -97,12 +99,13 @@
       <p>Backend-as-a-Service, in contrast, provides all or most of the services offered by IaaS and PaaS, but in
         addition, handles backend functionality as described above, so that a developer's main responsibility is
         frontend code.</p>
-      <p><img alt="" src="images/case-study/image20.png" title=""></p>
+      <p><img alt="Comparison of IaaS, PaaS, BaaS" src="images/case-study/comparison-aas.png" title=""></p>
       <p>With all of these services, there are trade-offs between convenience and control. Compared to the other
         services mentioned above, a BaaS handles more of an application's core functionality and therefore gives
         developers less control. Relying on a hosted BaaS means that a developer's data lives on infrastructure that is
         owned and controlled by the service provider. Even if developers can access and interact with the data generated
-        by their applications, <a href="https://www.inkandswitch.com/local-first.html">this question of ownership and control over data is worth considering</a>, especially for
+        by their applications, <a href="https://www.inkandswitch.com/local-first.html">this question of ownership and
+          control over data is worth considering</a>, especially for
         developers concerned about privacy. Furthermore, relying on a hosted BaaS exposes a developer to the risk of
         vendor lock-in if their application outgrows the BaaS. These closed-source systems are not customizable beyond
         the built-in features offered by the provider. If a vendor drops support for features, makes changes that break
@@ -130,8 +133,10 @@
         core Backpack application and tracing the expansion of the system from a single app to a containerized,
         scalable, multi-instance system.</p>
 
-      <h3 id="building-a-generic-backend" data-title="Building the Core App">Building a generic backend: the Backpack core app</h3>
-      <p><img alt="" src="images/case-study/image13.png" title=""></p>
+      <h3 id="building-a-generic-backend" data-title="Building the Core App">Building a generic backend: the Backpack
+        core app</h3>
+      <p><img alt="Backpack's basic architecture: API plus SDK" src="images/case-study/backpack-architecture.png"
+          title=""></p>
       <p>At the core of Backpack's infrastructure is the Backpack API. Built with JavaScript using Express, it is a
         generic backend that can be adapted to fit a frontend developer's needs. How do you create a generic backend?
         When building the core Backpack API, we needed to figure out how to provide basic backend functionality without
@@ -151,7 +156,8 @@
         Backpack component: collection management, data persistence, user authentication, file storage, and realtime
         communication over websockets.</p>
 
-      <h4 id="collection-management" data-title="Collection Management">Collection Management & Data Persistence: the <code>db</code> module</h4>
+      <h4 id="collection-management" data-title="Collection Management">Collection Management & Data Persistence: the
+        <code>db</code> module</h4>
       <p>Building basic features like data persistence presents some extra challenges in a BaaS. Not knowing ahead of
         time what kind of data will need to be stored means that flexibility is essential, so we chose to use a document
         database, MongoDB, as Backpack's data store instead of a relational database. This choice places the burden of
@@ -232,17 +238,21 @@
       <p>By default, Backpack's API endpoints can only be accessed by users authenticated through the SDK's
         authentication module, detailed in the next section.</p>
 
-      <h4 id="user-authentication" data-title="User Authentication">User Authentication: the <code>auth</code> module</h4>
+      <h4 id="user-authentication" data-title="User Authentication">User Authentication: the <code>auth</code> module
+      </h4>
       <p>Backpack provides built-in authentication. Session tokens for users are stored in cookies and tracked using
         Redis. The auth module exposes methods that allow developers to build workflows that enable users to register,
         login, or logout from their applications:</p>
       <ul>
-        <li><code class="language-js">backpack.auth.register(email, password)</code>: creates a new user with the given <code class="language-js">email</code> and <code class="language-js">password</code> in the
+        <li><code class="language-js">backpack.auth.register(email, password)</code>: creates a new user with the given
+          <code class="language-js">email</code> and <code class="language-js">password</code> in the
           application's Backpack. Returns the new user's database id if successful, validation errors if not.</li>
-        <li><code class="language-js">backpack.auth.login(email, password)</code>: creates a session for the user if given a valid <code class="language-js">email</code> and <code class="language-js">password</code>. A
+        <li><code class="language-js">backpack.auth.login(email, password)</code>: creates a session for the user if
+          given a valid <code class="language-js">email</code> and <code class="language-js">password</code>. A
           session token is passed back to the frontend via a secure, HttpOnly cookie which will be sent on subsequent
           requests to the Backpack.</li>
-        <li><code class="language-js">backpack.auth.logout()</code>: destroys the user's session, effectively signing the user out of the web
+        <li><code class="language-js">backpack.auth.logout()</code>: destroys the user's session, effectively signing
+          the user out of the web
           application.</li>
       </ul>
       <p>When deployed with a custom domain, Backpack automatically requests SSL certificates from Let's Encrypt to
@@ -255,23 +265,31 @@
         allows independent scaling of services and simplifies the process of viewing and receiving files. Docker makes
         it easy to persist data using volumes.</p>
       <ul>
-        <li><code class="language-js">backpack.storage.getFile(userId, filename)</code>: returns file from <code>current_user_id/filename</code> in the body of the
+        <li><code class="language-js">backpack.storage.getFile(userId, filename)</code>: returns file from
+          <code>current_user_id/filename</code> in the body of the
           response. </li>
-        <li><code class="language-js">backpack.storage.getListOfUserFiles(userId)</code>: returns a JSON object containing an array of metadata records
+        <li><code class="language-js">backpack.storage.getListOfUserFiles(userId)</code>: returns a JSON object
+          containing an array of metadata records
           for the files associated with a user.</li>
-        <li><code class="language-js">backpack.storage.uploadFile(fileFromFormData, filename, bucket)</code>: saves the file in the file system and a
+        <li><code class="language-js">backpack.storage.uploadFile(fileFromFormData, filename, bucket)</code>: saves the
+          file in the file system and a
           record of associated user data in the database. Returns a JSON object containing metadata if successful,
           validation errors if not.</li>
-        <li><code class="language-js">backpack.storage.updateFile(currentFilename, newFilename, bucket)</code>: overwrites file metadata. Returns a JSON
+        <li><code class="language-js">backpack.storage.updateFile(currentFilename, newFilename, bucket)</code>:
+          overwrites file metadata. Returns a JSON
           object containing metadata if successful, validation errors if not.</li>
-        <li><code class="language-js">backpack.storage.overwriteFile(fileFromFormData, filename)</code>: replaces file currently saved under
-          <code>current_user/filename</code> with <code class="language-js">fileFromFormData</code>. Metadata will not be updated. Returns a success message if
+        <li><code class="language-js">backpack.storage.overwriteFile(fileFromFormData, filename)</code>: replaces file
+          currently saved under
+          <code>current_user/filename</code> with <code class="language-js">fileFromFormData</code>. Metadata will not
+          be updated. Returns a success message if
           successful, validation error if not.</li>
-        <li><code class="language-js">backpack.storage.deleteFile(filename)</code>: deletes file under <code>current_user/filename</code>. Returns metadata and a success
+        <li><code class="language-js">backpack.storage.deleteFile(filename)</code>: deletes file under
+          <code>current_user/filename</code>. Returns metadata and a success
           message if successful, validation errors if not.</li>
       </ul>
 
-      <h4 id="websockets" data-title="Websockets">Realtime Communication with Websockets: the <code>ws</code> module</h4>
+      <h4 id="websockets" data-title="Websockets">Realtime Communication with Websockets: the <code>ws</code> module
+      </h4>
       <p>Implementing websockets in a custom backend requires handling quite a bit of complexity. Because websockets are
         an alternate communication protocol to HTTP, many of the same issues that would normally be handled by HTTP
         requests and responses have to be addressed. In addition, the developer needs to create a websocket server,
@@ -281,64 +299,102 @@
         abstraction over much of this complexity, with convenience methods for handling most websocket functions.</p>
       <p>To create a websocket connection, call the <code class="language-js">ws</code> method:</p>
       <code class="language-js">const websocket = backpack.ws();</code>
-      <p>Backpack websocket messages always include an <code>action</code> property that tells the server how to process the message.
+      <p>Backpack websocket messages always include an <code>action</code> property that tells the server how to process
+        the message.
         Once the message is processed, the server sends a message to the client with the same action property value
         along with additional information corresponding to the action. It is also possible to create messages with
         custom actions that can be processed client-side.</p>
 
       <h5 id="ws-database-interactions">Database Interactions</h5>
       <ul>
-        <li><code class="language-js">websocket.actions.findResource(collection, query)</code>: returns a JSON object containing an <code class="language-js">action</code> property that
-          is set to 'find' and a <code class="language-js">response</code> property that is set to an array of database records that match the query.
+        <li><code class="language-js">websocket.actions.findResource(collection, query)</code>: returns a JSON object
+          containing an <code class="language-js">action</code> property that
+          is set to 'find' and a <code class="language-js">response</code> property that is set to an array of database
+          records that match the query.
         </li>
-        <li><code class="language-js">websocket.actions.getCollection(collection)</code>: returns a JSON object containing an array of database records
-          for the collection with an <code class="language-js">action</code> property that is set to 'getAll' and a <code class="language-js">collection</code> property that is set to
+        <li><code class="language-js">websocket.actions.getCollection(collection)</code>: returns a JSON object
+          containing an array of database records
+          for the collection with an <code class="language-js">action</code> property that is set to 'getAll' and a
+          <code class="language-js">collection</code> property that is set to
           the collection name.</li>
-        <li><code class="language-js">websocket.actions.getResource(collection, id)</code>: returns a JSON object containing a database record with an
+        <li><code class="language-js">websocket.actions.getResource(collection, id)</code>: returns a JSON object
+          containing a database record with an
           <code class="language-js">action</code> property that is set to 'getOne'.</li>
-        <li><code class="language-js">websocket.actions.createResource(collection, data)</code>: returns a JSON object containing the new database record
+        <li><code class="language-js">websocket.actions.createResource(collection, data)</code>: returns a JSON object
+          containing the new database record
           with an <code class="language-js">action</code> property that is set to 'create'.</li>
-        <li><code class="language-js">websocket.actions.overwriteResource(collection, id, data)</code>: overwrites the existing record with the key-value
-          pairs in <code class="language-js">data</code>. Key-value pairs not included in data will be lost. Returns a JSON object
-          containing the overwritten database record with an <code class="language-js">action</code> property that is set to 'update'.</li>
-        <li><code class="language-js">websocket.actions.updateResource(collection, id, data)</code>: updates an existing record by modifying existing
-          fields and/or adding new ones. Existing key-value pairs not included in <code class="language-js">data</code> will remain in the
-          document. Returns a JSON object containing the updated database record with an <code class="language-js">action</code> property that is set to
+        <li><code class="language-js">websocket.actions.overwriteResource(collection, id, data)</code>: overwrites the
+          existing record with the key-value
+          pairs in <code class="language-js">data</code>. Key-value pairs not included in data will be lost. Returns a
+          JSON object
+          containing the overwritten database record with an <code class="language-js">action</code> property that is
+          set to 'update'.</li>
+        <li><code class="language-js">websocket.actions.updateResource(collection, id, data)</code>: updates an existing
+          record by modifying existing
+          fields and/or adding new ones. Existing key-value pairs not included in <code class="language-js">data</code>
+          will remain in the
+          document. Returns a JSON object containing the updated database record with an <code
+            class="language-js">action</code> property that is set to
           'patch'.</li>
-        <li><code class="language-js">websocket.actions.deleteResource(collection, id)</code>: returns a JSON object containing the deleted database
+        <li><code class="language-js">websocket.actions.deleteResource(collection, id)</code>: returns a JSON object
+          containing the deleted database
           record with an <code class="language-js">action</code> property that is set to 'delete'.</li>
       </ul>
 
       <h5 id="ws-channels" data-title="Channels">Websocket Channels</h5>
       <ul>
-        <li><code class="language-js">websocket.actions.joinUsersChannels(usersInformationCollection)</code>: returns a list of channels the user is
+        <li><code class="language-js">websocket.actions.joinUsersChannels(usersInformationCollection)</code>: returns a
+          list of channels the user is
           subscribed to.</li>
-        <li><code class="language-js">websocket.actions.createChannel(usersInformationCollection, channelType, name)</code>: creates a new channel
-          document and updates the <code class="language-js">currentChannel</code> and <code class="language-js">channels</code> fields in the user's 'usersInformationCollection'
+        <li><code
+            class="language-js">websocket.actions.createChannel(usersInformationCollection, channelType, name)</code>:
+          creates a new channel
+          document and updates the <code class="language-js">currentChannel</code> and <code
+            class="language-js">channels</code> fields in the user's 'usersInformationCollection'
           document. It also broadcasts the new channel to all active websocket connections.</li>
-        <li><code class="language-js">websocket.actions.joinChannel(usersInformationCollection, channelType, channelId)</code>: subscribes a user to the
-          channel referenced by <code class="language-js">channelType</code> and <code class="language-js">channelId</code> and updates the <code class="language-js">currentChannel</code> and <code class="language-js">channels</code>
+        <li><code
+            class="language-js">websocket.actions.joinChannel(usersInformationCollection, channelType, channelId)</code>:
+          subscribes a user to the
+          channel referenced by <code class="language-js">channelType</code> and <code
+            class="language-js">channelId</code> and updates the <code class="language-js">currentChannel</code> and
+          <code class="language-js">channels</code>
           fields in the user's 'usersInformationCollection' document.</li>
-        <li><code class="language-js">websocket.actions.leaveChannel(usersInformationCollection, channelType, channelId)</code>: unsubscribes a user from
-          the channel referenced by <code class="language-js">channelType</code> and <code class="language-js">channelId</code> and updates the <code class="language-js">currentChannel</code> and <code class="language-js">channels</code>
+        <li><code
+            class="language-js">websocket.actions.leaveChannel(usersInformationCollection, channelType, channelId)</code>:
+          unsubscribes a user from
+          the channel referenced by <code class="language-js">channelType</code> and <code
+            class="language-js">channelId</code> and updates the <code class="language-js">currentChannel</code> and
+          <code class="language-js">channels</code>
           fields in the user's 'usersInformationCollection' document.</li>
-        <li><code class="language-js">websocket.actions.changeChannel(usersInformationCollection, channelType, channelId)</code>: changes the user's
-          current channel to the channel referenced by <code class="language-js">channelType</code> and <code class="language-js">channelId</code> by updating the
-          <code class="language-js">currentChannel</code> field in the user's 'usersInformationCollection' document.</li>
+        <li><code
+            class="language-js">websocket.actions.changeChannel(usersInformationCollection, channelType, channelId)</code>:
+          changes the user's
+          current channel to the channel referenced by <code class="language-js">channelType</code> and <code
+            class="language-js">channelId</code> by updating the
+          <code class="language-js">currentChannel</code> field in the user's 'usersInformationCollection' document.
+        </li>
         <li><code class="language-js">websocket.actions.deleteChannel(usersInformationCollection, channelMessagesCollection, channelType,
-          channelId)</code>: deletes the channel referenced by <code class="language-js">channelType</code> and <code class="language-js">channelId</code> along with all the messages associated with it. The <code class="language-js">currentChannel</code> and <code class="language-js">channels</code> fields are then updated in the
+          channelId)</code>: deletes the channel referenced by <code class="language-js">channelType</code> and <code
+            class="language-js">channelId</code> along with all the messages associated with it. The <code
+            class="language-js">currentChannel</code> and <code class="language-js">channels</code> fields are then
+          updated in the
           'usersInformationCollection' document for each user that is subscribed to the channel.</li>
       </ul>
 
       <h5 id="ws-and-http-responses" data-title="Responses">Websocket & HTTP Responses</h5>
-      <p>When HTTP requests are made by calling certain methods on the db object of the SDK (<code class="language-js">createResource()</code>,
-        <code class="language-js">updateResource()</code>, <code class="language-js">overwriteResource()</code>, and <code class="language-js">deleteResource()</code>), the response from the database interaction is
+      <p>When HTTP requests are made by calling certain methods on the db object of the SDK (<code
+          class="language-js">createResource()</code>,
+        <code class="language-js">updateResource()</code>, <code class="language-js">overwriteResource()</code>, and
+        <code class="language-js">deleteResource()</code>), the response from the database interaction is
         broadcast to active websocket connections.</p>
-      <p>If the response contains a valid <code class="language-js">channelType</code> and <code class="language-js">channelId</code> property, the message is only broadcast to active
+      <p>If the response contains a valid <code class="language-js">channelType</code> and <code
+          class="language-js">channelId</code> property, the message is only broadcast to active
         websocket connections who are subscribed to that channel.</p>
-      <p>If the response does not contain a <code class="language-js">channelType</code> and <code class="language-js">channelId</code> property, the message is broadcast to all active
+      <p>If the response does not contain a <code class="language-js">channelType</code> and <code
+          class="language-js">channelId</code> property, the message is broadcast to all active
         websocket connections.</p>
-      <p>The response will not be broadcast to any websocket connections if the document includes a property called <code class="language-js">broadcast</code> set to <code class="language-js">false</code>.</p>
+      <p>The response will not be broadcast to any websocket connections if the document includes a property called
+        <code class="language-js">broadcast</code> set to <code class="language-js">false</code>.</p>
 
       <h4 id="hosting" data-title="Hosting">Hosting a Web Application with Backpack</h4>
       <p>The final step in the development of a web app is deploying it for hosting on the internet. Since the backend
@@ -349,16 +405,16 @@
       <p>When a frontend developer spins up a Backpack using the Backpack admin panel, they give it a name, like
         'my-app'. This name will be the subdomain where their backend will be hosted. For example, if the Backpack
         system is hosted at <a href="https://bkpk.dev">bkpk.dev</a>, the particular Backpack
-        instance URL will be served over HTTPS at <a
-          href="https://my-app-be.backpack.dev">my-app-be.bkpk.dev</a> where the '-be' in the URL
+        instance URL will be served over HTTPS at <a href="https://my-app-be.backpack.dev">my-app-be.bkpk.dev</a> where
+        the '-be' in the URL
         represents 'backend'.</p>
       <p>===Gif of naming a backpack</p>
       <p>Developers can view and manage collection data and users in the admin panel for each backpack:</p>
       <p>===Another gif of clicking on the backpack and modifying collection data</p>
       <p>Once the developer has finished working on the frontend of their website, they can upload it as a zipped file
         through their Backpack's admin panel to deploy it. The admin panel will extract their site's files, push them to
-        the Nginx web server, and serve the website from <a
-          href="https://my-app.bkpk.dev">my-app.bkpk.dev</a>, also over HTTPS. This process
+        the Nginx web server, and serve the website from <a href="https://my-app.bkpk.dev">my-app.bkpk.dev</a>, also
+        over HTTPS. This process
         takes less than a minute.</p>
       <p>===Another gif of uploading a frontend zip and hitting the website</p>
       <p>Multiple backpacks can be hosted in the same deployment.</p>
@@ -382,7 +438,7 @@
         alternative to virtual machines. Because they share the host's operating system, they are faster to spin up and
         require fewer system resources to run. Spin-up speed is critical for Backpack since entire application stacks
         need to be created on the fly.</p>
-      <p><img alt="" src="images/case-study/image3.png" title=""></p>
+      <p><img alt="Comparison of virtual machines and containers" src="images/case-study/vm-container.png" title=""></p>
       <p>Once Docker is installed on a machine, the Docker Daemon can be used to run Docker containers on it. The Docker
         Daemon spins up and tears down containers using Docker images that specify how the containers should be built
         and which processes should run within them.</p>
@@ -400,13 +456,15 @@
         container to a port on the host machine. This enabled our app to listen for requests from the host machine.</p>
       <p>Finally, to run our custom Express API as a container, we built a custom Docker image to run our application on
         top of a NodeJS image.</p>
-      <p><img alt="" src="images/case-study/image18.png" title=""></p>
+      <p><img alt="Containerized Backpack instance with four containers on a bridge networking"
+          src="images/case-study/backpack-bridge-network.png" title=""></p>
       <p>Containerizing Backpack in this way dramatically simplifies the work required to deploy Backpack by eliminating
         the need to manually set up and install the ecosystemBackpack depends on. By running the entire application
         through Docker, we can guarantee a consistent environment and runtime for each component of our system,
         regardless of where Backpack is spun up.</p>
 
-      <h2 id="supporting-multiple-backpacks" data-title="Multiple Backpacks">Supporting Multiple Backpacks: Multi-Instance Architecture</h2>
+      <h2 id="supporting-multiple-backpacks" data-title="Multiple Backpacks">Supporting Multiple Backpacks:
+        Multi-Instance Architecture</h2>
       <p>At this point, we had a system that was easy to deploy and supported one Backpack instance, ideal for local
         development. But if we wanted to create a production system that could support more than one backend on the same
         server, we would have to edit the Compose file significantly each time a Backpack was deployed to avoid
@@ -417,7 +475,8 @@
 
       <h3 id="tenant-vs-instance" data-title="Architecture Comparison">Multi-tenant vs. multi-instance</h3>
 
-      <h4 id="multi-tenant" data-title="Multi-Tenant">The Multi-Tenant Architecture</h4> <img alt="" src="images/case-study/image1.png" title="">
+      <h4 id="multi-tenant" data-title="Multi-Tenant">The Multi-Tenant Architecture</h4> <img alt=""
+        src="images/case-study/multi-tenant.png" title="">
       <p>In the multi-tenant architecture, a single Backpack instance would become the backend for multiple web
         applications. A single Express API would handle requests from frontends of each web app, routing them to a
         single MongoDB server which would persist data for each web application in a separate database within the same
@@ -447,7 +506,8 @@
       </ol>
 
       <h4 id="multi-instance" data-title="Multi-Instance">The Multi-Instance Architecture</h4>
-      <p><img alt="" src="images/case-study/image4.png" title=""></p>
+      <p><img alt="Multi-instance architecture with a different Backpack instance for each application"
+          src="images/case-study/multi-instance.png" title=""></p>
       <p>In contrast, a multi-instance architecture would maximize isolation between applications while separating
         routing and administration logic from the core Backpack API into dedicated components. The backend for each
         application would be a self-contained environment comprised of the Express API, MongoDB, Redis, and Nginx, just
@@ -471,7 +531,8 @@
       <p>We felt that the costs involved with building a multi-instance system were well worth the benefits, especially
         if we built networking and container orchestration tools into Backpack.</p>
 
-      <h3 id="building-the-multi-instance" data-title="A Multi-Instance Backpack">Building the multi-instance architecture</h3>
+      <h3 id="building-the-multi-instance" data-title="A Multi-Instance Backpack">Building the multi-instance
+        architecture</h3>
       <p>After deciding on an architecture, we needed to figure out how to take the system from a single-instance
         Backpack on a single server to a scalable, multi-instance, multi-node system.</p>
       <p>In our single-instance Backpack deployment, all four containerized components lived on a single server. The
@@ -479,11 +540,13 @@
         running Nginx was part of the deployment, but was not connected to the bridge network since it did not need to
         communicate directly with the other components in the deployment. The API and Nginx servers both exposed ports
         to listen to requests.</p>
-      <p><img alt="" src="images/case-study/image22.png" title=""></p>
+      <p><img alt="Single Backpack instance on a single server" src="images/case-study/single-backpack-single-node.png"
+          title=""></p>
       <p>In order to implement a multi-instance architecture that could support multiple Backpacks in a single
         deployment, we needed to group our single-instance components into a logical unit, a stack of containerized
         services, that we could dynamically spin up or tear down.</p>
-      <p><img alt="" src="images/case-study/image16.png" title=""></p>
+      <p><img alt="Many Backpack instances on a single server" src="images/case-study/many-backpacks-single-node.png"
+          title=""></p>
       <p>Figuring out how to deploy multiple Backpacks to a single server introduced two new challenges:</p>
       <ol start="1">
         <li>With multiple Backpacks running on one system, how could we route the requests hitting the system to the
@@ -496,13 +559,15 @@
         expensive. Scaling out across multiple servers could solve this problem, but would introduce additional
         complexity to our system's communication and routing needs as individual Backpack stacks could now live on any
         host machine within a deployment.</p>
-      <p><img alt="" src="images/case-study/image14.png" title=""></p>
+      <p><img alt="Many Backpack instances across multiple-servers"
+          src="images/case-study/many-backpacks-multiple-nodes.png" title=""></p>
       <p>Finally, if we're already going to scale out a Backpack deployment across multiple servers and deal with the
         networking challenges that that introduces, can we take our system a step further by deploying an individual
         Backpack stack across these servers? This would give us maximum flexibility with how to deploy individual
         services. Perhaps we need beefier servers to handle database persistence and would like all of our Mongo
         services to run from that server, moving the Nginx services to a less robust machine. </p>
-      <p><img alt="" src="images/case-study/image8.png" title=""></p>
+      <p><img alt="Many Backpack instances with services distributed over multiple servers"
+          src="images/case-study/distributed-services-many-hosts.png" title=""></p>
       <p>To accomplish this, there are quite a few things we need to do:</p> <a></a><a></a>
       <table>
         <tbody>
@@ -539,21 +604,25 @@
       <p>Docker Swarm is designed to manage services running on multiple nodes, which is just what we need to scale our
         system. A node in Swarm terminology is a machine running Docker that is a member of the swarm. Nodes can be
         managers or workers.</p>
-      <p><img alt="" src="images/case-study/image17.png" title=""></p>
+      <p><img alt="Empty worker nodes, manager has not yet assigned tasks" src="images/case-study/assigning-tasks-1.png"
+          title=""></p>
       <p>When you configure a swarm, you specify its desired state--for each service, how many replicas or running tasks
         it requires, the ports it exposes, and the networks it belongs to. A task is a containerized process that
         instantiates a service. It is a manager node's job to maintain the system in the desired state by assigning
         tasks to worker nodes. Because Swarm figures out how to distribute services across worker nodes, scaling an
         application is relatively easy. Here we can see one Backpack stack that has been spread out across four worker
         nodes:</p>
-      <p><img alt="" src="images/case-study/image15.png" title=""></p>
+      <p><img alt="Single Backpack stack assigned across four nodes" src="images/case-study/assigning-tasks-2.png"
+          title=""></p>
       <p>If some of our services are deployed on different nodes, as in the diagram above, how will they be able to
         communicate with each other? Swarm provides us with overlay networks that can span across nodes. Each service is
         given a unique name so that it can be located by other services in the swarm.</p>
-      <p><img alt="" src="images/case-study/image19.png" title=""></p>
+      <p><img alt="Two Backpack stacks assigned across nodes" src="images/case-study/assigning-tasks-3.png" title="">
+      </p>
       <p>As we add more Backpacks to our system, Swarm will continue figuring out how to deploy each Backpack's services
         across the nodes and take care of the networking within Backpack stacks using overlay networks.</p>
-      <p><img alt="" src="images/case-study/image11.png" title=""></p>
+      <p><img alt="Five Backpack stacks assigned across full nodes" src="images/case-study/assigning-tasks-5.png"
+          title=""></p>
       <p>By choosing the right tool, Docker Swarm, we have accomplished our first three to-do items. We now have
         multiple Backpacks living on multiple nodes, with overlay networks for handling communication between their
         services.</p>
@@ -571,14 +640,16 @@
         case, for example, with a single-instance Backpack deployment. If we specify that our Express API should listen
         for requests on port 3000, and our Nginx server should listen on port 3001, the ingress routing mesh will ensure
         that requests to those ports on any node are forwarded to the appropriate service.</p>
-      <p><img alt="" src="images/case-study/image12.png" title=""></p>
+      <p><img alt="Swarm's ingress routing mesh routing requests to a single Backpack stack"
+          src="images/case-study/ingress-routing-mesh-routing-1.png" title=""></p>
       <p>However, once we have multiple Backpack instances, routing becomes more complicated. The ports each container
         should expose are specified in the Stack file that we use to spin up each Backpack instance. But because each
         instance is configured by the same stack file, all Backpacks would expose the same port number. Two services
         can't expose the same port through the ingress routing mesh: it would have no way to distinguish which service a
         particular request should be routed to. So how can we have all Backpack instances run on the same system and
         listen for requests if they all publish the same ports through the routing mesh?</p>
-      <p><img alt="" src="images/case-study/image21.png" title=""></p>
+      <p><img alt="The ingress routing mesh cannot handle port conflicts"
+          src="images/case-study/port-conflicts-routing-2.png" title=""></p>
       <p>A common solution to this problem is to use a reverse proxy that can receive requests from outside the swarm
         and route the requests to the appropriate service within the swarm using configuration rules. By running the
         proxy as another service within the swarm on the same overlay network as each Backpack's Express API & Nginx
@@ -586,7 +657,7 @@
         our port conflict issue. Because each Backpack stack is assigned a unique name when it's spun up, we can
         incorporate that name into the reverse proxy's routing rules, telling it to look for that name in the URL of
         incoming requests to route requests to the right place.</p>
-      <p><img alt="" src="images/case-study/image9.png" title=""></p>
+      <p><img alt="adding a reverse proxy" src="images/case-study/reverse-proxy-routing-3.png" title=""></p>
       <p>However, we have not solved all of our routing problems yet. One of the key requirements of our system is that
         it is easy to spin up and tear down Backpacks. This means that we need to be able to inform our reverse proxy
         about changes in the swarm. If we use Nginx or HAProxy as our reverse proxies, we'll need some way to
@@ -649,7 +720,8 @@
         frontend developers and the Backpacks they created. We chose not to use Mongo for this portion of our system
         because we had well-defined schemas for and relationships between each entity we wanted to store in the
         database.</p>
-      <p><img alt="" src="images/case-study/image23.png" title=""></p>
+      <p><img alt="Final Backpack architecture with reverse proxy and admin panel, but without overlay network"
+          src="images/case-study/final-architecture-minus-network.png" title=""></p>
 
       <h4 id="data-management">Data Management</h4>
       <p>Our final challenge was giving frontend developers a convenient way to interact with collection and user data
@@ -662,7 +734,8 @@
         notion of roles to authenticate developers versus normal users of their applications. After authenticating as a
         developer, these user management endpoints could be reached like any other API endpoint. However, we wanted to
         avoid exposing these vulnerable endpoints to the internet, so we explored some other options.</p>
-      <p><img alt="" src="images/case-study/image6.png" title=""></p>
+      <p><img alt="Access to database is not possible except through the API"
+          src="images/case-study/limit-db-access.png" title=""></p>
       <p>Another solution would be to connect the admin panel directly to each Backpack's MongoDB instance so that the
         admin panel would have full access to the database independent of the Express API. However, with our current
         architecture, each Backpack's MongoDB service is not accessible outside of the private overlay network used to
@@ -676,7 +749,8 @@
         of the admin panel requests a websocket connection from the admin backend. The backend then proxies this
         websocket request to the relevant Backpack using the overlay network and the unique service name assigned in the
         stack file.</p>
-      <p><img alt="" src="images/case-study/image10.png" title=""></p>
+      <p><img alt="final architecture with reverse proxy, admin panel, and network"
+          src="images/case-study/final-architecture.png" title=""></p>
       <p>Because this second port is only accessible from the admin panel's backend, we can securely expose the
         additional user management functionality we would not want normal users to have access to. In order to allow for
         efficient data management, we make use of the persistent connection afforded by the websocket connection to
@@ -709,7 +783,8 @@
       <h2 id="references">References</h2>
       <ul>
         <li>
-          <a href="https://blog.back4app.com/2019/07/24/backend-as-a-service-baas/">What is Backend as a Service (BaaS)?</a>
+          <a href="https://blog.back4app.com/2019/07/24/backend-as-a-service-baas/">What is Backend as a Service
+            (BaaS)?</a>
         </li>
         <li>
           <a href="https://jamstack.org/">JAMStack for static sites</a>
@@ -725,7 +800,7 @@
   </main>
 
   <script src="./scripts/outline.js"></script>
-  <script src="./scripts/prism.js"></script>  
+  <script src="./scripts/prism.js"></script>
 </body>
 
 </html>
