@@ -342,11 +342,12 @@ table.table {
   width: 80%;
 }
 
-table.documentation {
+table.table.documentation {
   width: 90%;
+  table-layout: fixed;
 }
 
-table.documentation thead .method {
+table.documentation th.method {
   width: 40%;
 }
 

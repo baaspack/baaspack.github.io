@@ -182,36 +182,36 @@
         </thead>
         <tbody>
           <tr>
-            <td class="method"><code class="language-js">bkpk.db.getCollection(collection)</code></td>
+            <td><code class="language-js">bkpk.db.getCollection(collection)</code></td>
             <td>returns a JSON object representing every database record in a collection as an array.</td>
           </tr>
           <tr>
-            <td class="method"><code class="language-js">bkpk.db.getResource(collection, id)</code></td>
+            <td><code class="language-js">bkpk.db.getResource(collection, id)</code></td>
             <td>returns a JSON object representing the database record with the given <code
                 class="language-js">id</code> in the given <code class="language-js">collection</code>.</td>
           </tr>
           <tr>
-            <td class="method"><code class="language-js">bkpk.db.createResource(collection, data)</code></td>
+            <td><code class="language-js">bkpk.db.createResource(collection, data)</code></td>
             <td>creates a new database record in the given <code class="language-js">collection</code> with the
               properties represented by <code class="language-js">data</code>. Returns a JSON object representing the
               created database object.</td>
           </tr>
           <tr>
-            <td class="method"><code class="language-js">bkpk.db.updateResource(collection, id, data)</code></td>
+            <td><code class="language-js">bkpk.db.updateResource(collection, id, data)</code></td>
             <td>updates the database record identified by <code class="language-js">collection</code> and <code
                 class="language-js">id</code> with
               the properties provided by <code class="language-js">data</code>. Returns the updated database record.
             </td>
           </tr>
           <tr>
-            <td class="method"><code class="language-js">bkpk.db.overwriteResource(collection, id, data)</code></td>
+            <td><code class="language-js">bkpk.db.overwriteResource(collection, id, data)</code></td>
             <td>overwrites the database record identified by <code class="language-js">collection</code> and <code
                 class="language-js">id</code> with the properties provided by <code class="language-js">data</code>.
               Returns
               the updated database record.</td>
           </tr>
           <tr>
-            <td class="method"><code class="language-js">bkpk.db.deleteResource(collection, id)</code></td>
+            <td><code class="language-js">bkpk.db.deleteResource(collection, id)</code></td>
             <td>deletes the database record with the given <code class="language-js">id</code> in the given <code
                 class="language-js">collection</code>.
               Returns the deleted database record.</td>
@@ -278,14 +278,14 @@
         </thead>
         <tbody>
           <tr>
-            <td class="method"><code class="language-js">bkpk.auth.register(email, password)</code></td>
+            <td><code class="language-js">bkpk.auth.register(email, password)</code></td>
             <td>creates a new user with the given <code class="language-js">email</code> and <code
                 class="language-js">password</code> in the
               application's Backpack. Returns the new user's database id if successful, validation errors if not.
             </td>
           </tr>
           <tr>
-            <td class="method"><code class="language-js">bkpk.auth.login(email, password)</code></td>
+            <td><code class="language-js">bkpk.auth.login(email, password)</code></td>
             <td>creates a session for the user if given a valid <code class="language-js">email</code> and <code
                 class="language-js">password</code>. A
               session token is passed back to the frontend via a secure, HttpOnly cookie which will be sent on
@@ -293,7 +293,7 @@
               requests to the Backpack.</td>
           </tr>
           <tr>
-            <td class="method"><code class="language-js">bkpk.auth.logout()</code></td>
+            <td><code class="language-js">bkpk.auth.logout()</code></td>
             <td>destroys the user's session, effectively signing
               the user out of the web application.</td>
           </tr>
@@ -318,19 +318,19 @@
         </thead>
         <tbody>
           <tr>
-            <td class="method"><code class="language-js">bkpk.storage.getFile(userId, filename)</code></td>
+            <td><code class="language-js">bkpk.storage.getFile(userId, filename)</code></td>
             <td>returns file from
               <code>current_user_id/filename</code> in the body of the
               response.</td>
           </tr>
           <tr>
-            <td class="method"><code class="language-js">bkpk.storage.getListOfUserFiles(userId)</code></td>
+            <td><code class="language-js">bkpk.storage.getListOfUserFiles(userId)</code></td>
             <td>returns a JSON object
               containing an array of metadata records
               for the files associated with a user.</td>
           </tr>
           <tr>
-            <td class="method"><code
+            <td><code
                 class="language-js">bkpk.storage.uploadFile(fileFromFormData, filename, bucket)</code></td>
             <td>saves the
               file in the file system and a
@@ -338,13 +338,13 @@
               validation errors if not.</td>
           </tr>
           <tr>
-            <td class="method"><code
+            <td><code
                 class="language-js">bkpk.storage.updateFile(currentFilename, newFilename, bucket)</code></td>
             <td>overwrites file metadata. Returns a JSON
               object containing metadata if successful, validation errors if not.</td>
           </tr>
           <tr>
-            <td class="method"><code class="language-js">bkpk.storage.overwriteFile(fileFromFormData, filename)</code>
+            <td><code class="language-js">bkpk.storage.overwriteFile(fileFromFormData, filename)</code>
             </td>
             <td>replaces file
               currently saved under
@@ -354,7 +354,7 @@
               successful, validation error if not.</td>
           </tr>
           <tr>
-            <td class="method"><code class="language-js">bkpk.storage.deleteFile(filename)</code></td>
+            <td><code class="language-js">bkpk.storage.deleteFile(filename)</code></td>
             <td>deletes file under
               <code>current_user/filename</code>. Returns metadata and a success
               message if successful, validation errors if not.</td>
@@ -474,10 +474,12 @@
             </td>
           </tr>
           <tr>
-            <td><code class="language-js">ws.actions.leaveChannel(usersInformationCollection, channelType, channelId)</code>
+            <td><code
+                class="language-js">ws.actions.leaveChannel(usersInformationCollection, channelType, channelId)</code>
             </td>
-            <td>unsubscribes a user from the channel referenced by <code class="language-js">channelType</code> and <code
-                class="language-js">channelId</code> and updates the <code class="language-js">currentChannel</code> and
+            <td>unsubscribes a user from the channel referenced by <code class="language-js">channelType</code> and
+              <code class="language-js">channelId</code> and updates the <code class="language-js">currentChannel</code>
+              and
               <code class="language-js">channels</code>
               fields in the user's 'usersInformationCollection' document.</td>
           </tr>
@@ -486,8 +488,8 @@
                 class="language-js">ws.actions.changeChannel(usersInformationCollection, channelType, channelId)</code>
             </td>
             <td>
-              changes the user's current channel to the channel referenced by <code class="language-js">channelType</code> and <code
-                class="language-js">channelId</code> by updating the
+              changes the user's current channel to the channel referenced by <code
+                class="language-js">channelType</code> and <code class="language-js">channelId</code> by updating the
               <code class="language-js">currentChannel</code> field in the user's 'usersInformationCollection' document.
             </td>
           </tr>
@@ -496,8 +498,8 @@
             channelId)</code></td>
             <td>
               deletes the channel referenced by <code class="language-js">channelType</code> and <code
-              class="language-js">channelId</code> along with all the messages associated with it. The <code
-              class="language-js">currentChannel</code> and <code class="language-js">channels</code> fields are then
+                class="language-js">channelId</code> along with all the messages associated with it. The <code
+                class="language-js">currentChannel</code> and <code class="language-js">channels</code> fields are then
               updated in the 'usersInformationCollection' document for each user that is subscribed to the channel.
             </td>
           </tr>
@@ -921,7 +923,7 @@
       </ul>
     </article>
   </main>
-  
+
   <div id="modal-overlay" class="modal-overlay closed">
     <div id="modal" class="modal closed">
       <img src="#" alt="#">
