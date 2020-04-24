@@ -320,7 +320,7 @@ article.case-study li {
   text-indent: -2ch;
 }
 
-article.case-study ul li::before {
+article.case-study ul.bullets li::before {
   content: "•";
   padding-right: 1ch;
   color: var(--color-claret);
@@ -457,6 +457,14 @@ aside .visible > ul > li {
 .modal-overlay.closed,
 .modal.closed {
   display: none;
+}
+
+article.case-study .todos li {
+  line-height: 1.5rem;
+}
+
+.todos .done-now {
+  color: var(--color-pomegranate);
 }
 
 

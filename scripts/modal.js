@@ -8,8 +8,10 @@ modalOverlay.addEventListener('click', () => {
 });
 
 caseStudyArticle.addEventListener('click', (e) => {
-  if (e.target.tagName === 'IMG') {
-    modal.querySelector('img').src = e.target.src;
+  const { tagName, src } = e.target;
+
+  if (tagName === 'IMG') {
+    modal.querySelector('img').src = src;
 
     modal.classList.toggle('closed');
     modalOverlay.classList.toggle('closed');

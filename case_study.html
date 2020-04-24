@@ -49,7 +49,7 @@
       <p>A Backpack deployment consists of one or more Backpacks that each provides basic backend functionality for a
         web app. To enable each Backpack deployment to support multiple Backpacks, we built the system using a
         multi-instance architecture enabled by Docker Swarm:</p>
-      <ul>
+      <ul class="bullets">
         <li>A Backpack instance within the swarm is packaged as a containerized stack of services.</li>
         <li>A reverse proxy also hosted within the swarm routes requests to specific Backpacks based on human-friendly
           subdomain names.</li>
@@ -124,7 +124,7 @@
 
       <h2 id="backpack-core-app" data-title="The Core App">Backpack Core App</h2>
       <p>We set out to build a self-hosted BaaS with the following characteristics:</p>
-      <ul>
+      <ul class="bullets">
         <li>Provides essential backend functionality to support real-time frontend applications, including hosting</li>
         <li>Is easy to install, deploy, and administer</li>
         <li>Can support multiple backends on a single deployment</li>
@@ -693,21 +693,18 @@
         services to run from that server, moving the Nginx services to a less robust machine. </p>
       <p><img alt="Many Backpack instances with services distributed over multiple servers"
           src="images/case-study/distributed-services-many-hosts.png" title=""></p>
-      <p>To accomplish this, there are quite a few things we need to do:</p> <a></a><a></a>
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              <p>&#9744; Spin up / tear down backpack stacks</p>
-              <p>&#9744; Spin up / tear down backpack stacks across servers</p>
-              <p>&#9744; Manage communication within stacks across servers</p>
-              <p>&#9744; Route requests from the internet to the right backpack</p>
-              <p>&#9744; make it <span class="emphasize">easy</span> to spin up / tear down backpack stacks</p>
-              <p>&#9744; Manage backpack users & data from a centralized admin panel</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+
+      <p>To accomplish this, there are quite a few things we need to do:</p>
+      <div class="todos">
+        <ul>
+          <li>&#9744; Spin up / tear down backpack stacks</li>
+          <li>&#9744; Spin up / tear down backpack stacks across servers</li>
+          <li>&#9744; Manage communication within stacks across servers</li>
+          <li>&#9744; Route requests from the internet to the right backpack</li>
+          <li>&#9744; make it <span class="emphasize">easy</span> to spin up / tear down backpack stacks</li>
+          <li>&#9744; Manage backpack users & data from a centralized admin panel</li>
+        </ul>
+      </div>
 
       <h4 id="stack-management">Stack Management</h4>
       <p>Luckily, there are tools for managing containerized systems that will make these tasks manageable.</p>
@@ -725,7 +722,13 @@
         services will use to locate it on the network.</p>
       <p>Docker provides a Command Line Interface (CLI) to manage containers and swarms. Passing the stack file as an
         argument to Docker's CLI commands allows us to spin up, tear down, and manage Backpack stacks.</p>
-      <p>&#9745; Spin up / tear down backpack stacks Stack Files</p>
+
+      <div class="todos">
+        <ul>
+          <li class="done-now">&#9745; Spin up / tear down backpack stacks</li>
+        </ul>
+      </div>
+      
       <p>Docker Swarm is designed to manage services running on multiple nodes, which is just what we need to scale our
         system. A node in Swarm terminology is a machine running Docker that is a member of the swarm. Nodes can be
         managers or workers.</p>
@@ -751,8 +754,13 @@
       <p>By choosing the right tool, Docker Swarm, we have accomplished our first three to-do items. We now have
         multiple Backpacks living on multiple nodes, with overlay networks for handling communication between their
         services.</p>
-      <p>&#9745; Spin up / tear down backpack stacks across servers Worker & Manager Nodes</p>
-      <p>&#9745; Manage communication within stacks across servers Overlay Networks</p>
+
+      <div class="todos">
+        <ul>
+          <li class="done-now">&#9745; Spin up / tear down backpack stacks across servers</li>
+          <li class="done-now">&#9745; Manage communication within stacks across servers</li>
+        </ul>
+      </div>
 
       <h4 id="routing">Routing</h4>
       <p>Our next task is to route requests from outside the swarm to the correct Backpack. While we can use overlay
@@ -807,7 +815,13 @@
         dynamically, this becomes a little tricky. Traefik handles this by requesting SSL certificates for subdomains
         automatically from Let's Encrypt. This creates a slight delay when we spin up a new Backpack (less than a
         minute), but is a worthwhile trade-off for ensuring that communication with Backpack is encrypted. </p>
-      <p>&#9745; Route requests from the internet to the right backpack Traefik & Overlay Networks</p>
+
+      <div class="todos">
+        <ul>
+          <li class="done-now">&#9745; Route requests from the internet to the right backpack</li>
+        </ul>
+      </div>
+
       <p>Adding a Traefik reverse proxy allows us to check routing off our list, which leaves us with the task of
         handling system administration and swarm management.</p>
 
@@ -881,32 +895,28 @@
         reflect database changes on the frontend of the admin panel. This requires a custom Redux middleware that
         automatically updates the state of the admin panel based on the messages broadcast from the Backpack's websocket
         connection.</p>
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              <p>&#9745; Spin up / tear down backpack stacks Stack Files</p>
-              <p>&#9745; Spin up / tear down backpack stacks across servers Worker & Manager Nodes</p>
-              <p>&#9745; Manage communication within stacks across servers Overlay Networks</p>
-              <p>&#9745; Route requests from the internet to the right backpack Traefik & Overlay Networks</p>
-              <p>&#9745; make it <span class="emphasize">easy</span> to spin up / tear down backpack stacks Admin panel
-                hiding Docker CLI</p>
-              <p>&#9745; Manage backpack users & data from a centralized admin panel Overlay Networks</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+
+      <div class="todos">
+        <ul>
+          <li class="done-now">&#9745; Spin up / tear down backpack stacks</li>
+          <li class="done-now">&#9745; Spin up / tear down backpack stacks across servers</li>
+          <li class="done-now">&#9745; Manage communication within stacks across servers</li>
+          <li class="done-now">&#9745; Route requests from the internet to the right backpack</li>
+          <li class="done-now">&#9745; make it <span class="emphasize">easy</span> to spin up / tear down backpack stacks</li>
+          <li class="done-now">&#9745; Manage backpack users & data from a centralized admin panel</li>
+        </ul>
+      </div>
       <p>With this final feature, the last items on our Backpack to-do list can be checked off. </p>
 
       <h2 id="future-work">Future Work</h2>
-      <ul>
+      <ul class="bullets">
         <li>Show 'up' or 'down' status of each Backpack in the admin panel with healthchecks</li>
         <li>Spin up additional nodes for the Swarm from the admin panel using Docker Machine </li>
         <li>Let users control the number of Backpack API replicas handling API requests for a specific Backpack</li>
       </ul>
 
       <h2 id="references">References</h2>
-      <ul>
+      <ul class="bullets">
         <li>
           <a href="https://blog.back4app.com/2019/07/24/backend-as-a-service-baas/">What is Backend as a Service
             (BaaS)?</a>
