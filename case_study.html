@@ -172,26 +172,45 @@
       <p>By calling <code class="language-js">bkpk.db.createNewCollection(collectionName)</code> with a string
         representing a collection's name, developers can create a new collection that they can subsequently interact
         with through the SDK's other db methods:</p>
-      <ul>
-        <li><code class="language-js">bkpk.db.getCollection(collection)</code>: returns a JSON object representing
-          every database record in a collection as an array.</li>
-        <li><code class="language-js">bkpk.db.getResource(collection, id)</code>: returns a JSON object representing
-          the database record with the given <code class="language-js">id</code> in the given <code
-            class="language-js">collection</code>.</li>
-        <li><code class="language-js">bkpk.db.createResource(collection, data)</code>: creates a new database record
-          in the given <code class="language-js">collection</code> with the properties represented by <code
-            class="language-js">data</code>. Returns a JSON object representing the created database object. </li>
-        <li><code class="language-js">bkpk.db.updateResource(collection, id, data)</code>: updates the database
-          record identified by <code class="language-js">collection</code> and <code class="language-js">id</code> with
-          the properties provided by <code class="language-js">data</code>. Returns the updated database record.</li>
-        <li><code class="language-js">bkpk.db.overwriteResource(collection, id, data)</code>: overwrites the
-          database record identified by <code class="language-js">collection</code> and <code
-            class="language-js">id</code> with the properties provided by <code class="language-js">data</code>. Returns
-          the updated database record.</li>
-        <li><code class="language-js">bkpk.db.deleteResource(collection, id)</code>: deletes the database record
-          with the given <code class="language-js">id</code> in the given <code class="language-js">collection</code>.
-          Returns the deleted database record.</li>
-      </ul>
+      <table class="table documentation">
+        <thead>
+          <tr>
+            <th class="method">Method</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="method"><code class="language-js">bkpk.db.getCollection(collection)</code></td>
+            <td>returns a JSON object representing every database record in a collection as an array.</td>
+          </tr>
+          <tr>
+            <td class="method"><code class="language-js">bkpk.db.getResource(collection, id)</code></td>
+            <td>returns a JSON object representing the database record with the given <code class="language-js">id</code> in the given <code class="language-js">collection</code>.</td>
+          </tr>
+          <tr>
+            <td class="method"><code class="language-js">bkpk.db.createResource(collection, data)</code></td>
+            <td>creates a new database record in the given <code class="language-js">collection</code> with the properties represented by <code
+              class="language-js">data</code>. Returns a JSON object representing the created database object.</td>
+          </tr>
+          <tr>
+            <td class="method"><code class="language-js">bkpk.db.updateResource(collection, id, data)</code></td>
+            <td>updates the database record identified by <code class="language-js">collection</code> and <code class="language-js">id</code> with
+            the properties provided by <code class="language-js">data</code>. Returns the updated database record.</td>
+          </tr>
+          <tr>
+            <td class="method"><code class="language-js">bkpk.db.overwriteResource(collection, id, data)</code></td>
+            <td>overwrites the database record identified by <code class="language-js">collection</code> and <code
+              class="language-js">id</code> with the properties provided by <code class="language-js">data</code>. Returns
+            the updated database record.</td>
+          </tr>
+          <tr>
+            <td class="method"><code class="language-js">bkpk.db.deleteResource(collection, id)</code></td>
+            <td>deletes the database record with the given <code class="language-js">id</code> in the given <code class="language-js">collection</code>.
+            Returns the deleted database record.</td>
+          </tr>
+        </tbody>
+      </table>
       <p>These methods correspond to the following RESTful API endpoints exposed by Backpack, using 'cars' as an example
         collection:</p>
       <table class="table http-verbs">
