@@ -350,7 +350,7 @@ table.documentation thead .method {
   width: 40%;
 }
 
-table.documentation .method code {
+table.documentation code {
   font-size: .8rem;
 }
 

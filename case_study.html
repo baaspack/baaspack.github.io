@@ -144,7 +144,8 @@
         communication protocol would be required. In this section, we explain how Backpack handles this challenge.</p>
 
       <h4 id="sdk" data-title="The SDK">Software Development Kit (SDK)</h4>
-      <p>To make it <span class="emphasize">easy</span> for frontend developers to integrate Backpack into their web applications, we built the
+      <p>To make it <span class="emphasize">easy</span> for frontend developers to integrate Backpack into their web
+        applications, we built the
         Backpack SDK, a JavaScript library with convenience methods for interacting with Backpack's API.</p>
 
       <h5 id="configuring-the-sdk" data-title="Configuration">Configuring the SDK</h5>
@@ -186,28 +187,34 @@
           </tr>
           <tr>
             <td class="method"><code class="language-js">bkpk.db.getResource(collection, id)</code></td>
-            <td>returns a JSON object representing the database record with the given <code class="language-js">id</code> in the given <code class="language-js">collection</code>.</td>
+            <td>returns a JSON object representing the database record with the given <code
+                class="language-js">id</code> in the given <code class="language-js">collection</code>.</td>
           </tr>
           <tr>
             <td class="method"><code class="language-js">bkpk.db.createResource(collection, data)</code></td>
-            <td>creates a new database record in the given <code class="language-js">collection</code> with the properties represented by <code
-              class="language-js">data</code>. Returns a JSON object representing the created database object.</td>
+            <td>creates a new database record in the given <code class="language-js">collection</code> with the
+              properties represented by <code class="language-js">data</code>. Returns a JSON object representing the
+              created database object.</td>
           </tr>
           <tr>
             <td class="method"><code class="language-js">bkpk.db.updateResource(collection, id, data)</code></td>
-            <td>updates the database record identified by <code class="language-js">collection</code> and <code class="language-js">id</code> with
-            the properties provided by <code class="language-js">data</code>. Returns the updated database record.</td>
+            <td>updates the database record identified by <code class="language-js">collection</code> and <code
+                class="language-js">id</code> with
+              the properties provided by <code class="language-js">data</code>. Returns the updated database record.
+            </td>
           </tr>
           <tr>
             <td class="method"><code class="language-js">bkpk.db.overwriteResource(collection, id, data)</code></td>
             <td>overwrites the database record identified by <code class="language-js">collection</code> and <code
-              class="language-js">id</code> with the properties provided by <code class="language-js">data</code>. Returns
-            the updated database record.</td>
+                class="language-js">id</code> with the properties provided by <code class="language-js">data</code>.
+              Returns
+              the updated database record.</td>
           </tr>
           <tr>
             <td class="method"><code class="language-js">bkpk.db.deleteResource(collection, id)</code></td>
-            <td>deletes the database record with the given <code class="language-js">id</code> in the given <code class="language-js">collection</code>.
-            Returns the deleted database record.</td>
+            <td>deletes the database record with the given <code class="language-js">id</code> in the given <code
+                class="language-js">collection</code>.
+              Returns the deleted database record.</td>
           </tr>
         </tbody>
       </table>
@@ -271,21 +278,24 @@
         </thead>
         <tbody>
           <tr>
-            <td class="method"><code class="language-js">bkpk.auth.register(email, password)</code></td> 
-            <td>creates a new user with the given <code class="language-js">email</code> and <code class="language-js">password</code> in the
-            application's Backpack. Returns the new user's database id if successful, validation errors if not.
+            <td class="method"><code class="language-js">bkpk.auth.register(email, password)</code></td>
+            <td>creates a new user with the given <code class="language-js">email</code> and <code
+                class="language-js">password</code> in the
+              application's Backpack. Returns the new user's database id if successful, validation errors if not.
             </td>
           </tr>
           <tr>
             <td class="method"><code class="language-js">bkpk.auth.login(email, password)</code></td>
-            <td>creates a session for the user if given a valid <code class="language-js">email</code> and <code class="language-js">password</code>. A
-            session token is passed back to the frontend via a secure, HttpOnly cookie which will be sent on subsequent
-            requests to the Backpack.</td>
+            <td>creates a session for the user if given a valid <code class="language-js">email</code> and <code
+                class="language-js">password</code>. A
+              session token is passed back to the frontend via a secure, HttpOnly cookie which will be sent on
+              subsequent
+              requests to the Backpack.</td>
           </tr>
           <tr>
-            <td class="method"><code class="language-js">bkpk.auth.logout()</code></td> 
+            <td class="method"><code class="language-js">bkpk.auth.logout()</code></td>
             <td>destroys the user's session, effectively signing
-            the user out of the web application.</td>
+              the user out of the web application.</td>
           </tr>
         </tbody>
       </table>
@@ -298,29 +308,59 @@
         dependencies and keep MongoDB focused on the single task of managing collection data, not serving files. This
         allows independent scaling of services and simplifies the process of viewing and receiving files. Docker makes
         it easy to persist data using volumes.</p>
-      <ul>
-        <li><code class="language-js">bkpk.storage.getFile(userId, filename)</code>: returns file from
-          <code>current_user_id/filename</code> in the body of the
-          response. </li>
-        <li><code class="language-js">bkpk.storage.getListOfUserFiles(userId)</code>: returns a JSON object
-          containing an array of metadata records
-          for the files associated with a user.</li>
-        <li><code class="language-js">bkpk.storage.uploadFile(fileFromFormData, filename, bucket)</code>: saves the
-          file in the file system and a
-          record of associated user data in the database. Returns a JSON object containing metadata if successful,
-          validation errors if not.</li>
-        <li><code class="language-js">bkpk.storage.updateFile(currentFilename, newFilename, bucket)</code>:
-          overwrites file metadata. Returns a JSON
-          object containing metadata if successful, validation errors if not.</li>
-        <li><code class="language-js">bkpk.storage.overwriteFile(fileFromFormData, filename)</code>: replaces file
-          currently saved under
-          <code>current_user/filename</code> with <code class="language-js">fileFromFormData</code>. Metadata will not
-          be updated. Returns a success message if
-          successful, validation error if not.</li>
-        <li><code class="language-js">bkpk.storage.deleteFile(filename)</code>: deletes file under
-          <code>current_user/filename</code>. Returns metadata and a success
-          message if successful, validation errors if not.</li>
-      </ul>
+
+      <table class="table documentation">
+        <thead>
+          <tr>
+            <th class="method">Method</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="method"><code class="language-js">bkpk.storage.getFile(userId, filename)</code></td>
+            <td>returns file from
+              <code>current_user_id/filename</code> in the body of the
+              response.</td>
+          </tr>
+          <tr>
+            <td class="method"><code class="language-js">bkpk.storage.getListOfUserFiles(userId)</code></td>
+            <td>returns a JSON object
+              containing an array of metadata records
+              for the files associated with a user.</td>
+          </tr>
+          <tr>
+            <td class="method"><code
+                class="language-js">bkpk.storage.uploadFile(fileFromFormData, filename, bucket)</code></td>
+            <td>saves the
+              file in the file system and a
+              record of associated user data in the database. Returns a JSON object containing metadata if successful,
+              validation errors if not.</td>
+          </tr>
+          <tr>
+            <td class="method"><code
+                class="language-js">bkpk.storage.updateFile(currentFilename, newFilename, bucket)</code></td>
+            <td>overwrites file metadata. Returns a JSON
+              object containing metadata if successful, validation errors if not.</td>
+          </tr>
+          <tr>
+            <td class="method"><code class="language-js">bkpk.storage.overwriteFile(fileFromFormData, filename)</code>
+            </td>
+            <td>replaces file
+              currently saved under
+              <code>current_user/filename</code> with <code class="language-js">fileFromFormData</code>. Metadata will
+              not
+              be updated. Returns a success message if
+              successful, validation error if not.</td>
+          </tr>
+          <tr>
+            <td class="method"><code class="language-js">bkpk.storage.deleteFile(filename)</code></td>
+            <td>deletes file under
+              <code>current_user/filename</code>. Returns metadata and a success
+              message if successful, validation errors if not.</td>
+          </tr>
+        </tbody>
+      </table>
 
       <h4 id="websockets" data-title="Websockets">Realtime Communication with Websockets: the <code>ws</code> module
       </h4>
@@ -332,7 +372,7 @@
         websocket connection, handling failures, and creating websocket messages. Backpack provides a layer of
         abstraction over much of this complexity, with convenience methods for handling most websocket functions.</p>
       <p>To create a websocket connection, call the <code class="language-js">ws</code> method:</p>
-      <code class="language-js">const websocket = backpack.ws();</code>
+      <code class="language-js">const ws = backpack.ws();</code>
       <p>Backpack websocket messages always include an <code>action</code> property that tells the server how to process
         the message.
         Once the message is processed, the server sends a message to the client with the same action property value
@@ -340,80 +380,129 @@
         custom actions that can be processed client-side.</p>
 
       <h5 id="ws-database-interactions">Database Interactions</h5>
-      <ul>
-        <li><code class="language-js">websocket.actions.findResource(collection, query)</code>: returns a JSON object
-          containing an <code class="language-js">action</code> property that
-          is set to 'find' and a <code class="language-js">response</code> property that is set to an array of database
-          records that match the query.
-        </li>
-        <li><code class="language-js">websocket.actions.getCollection(collection)</code>: returns a JSON object
-          containing an array of database records
-          for the collection with an <code class="language-js">action</code> property that is set to 'getAll' and a
-          <code class="language-js">collection</code> property that is set to
-          the collection name.</li>
-        <li><code class="language-js">websocket.actions.getResource(collection, id)</code>: returns a JSON object
-          containing a database record with an
-          <code class="language-js">action</code> property that is set to 'getOne'.</li>
-        <li><code class="language-js">websocket.actions.createResource(collection, data)</code>: returns a JSON object
-          containing the new database record
-          with an <code class="language-js">action</code> property that is set to 'create'.</li>
-        <li><code class="language-js">websocket.actions.overwriteResource(collection, id, data)</code>: overwrites the
-          existing record with the key-value
-          pairs in <code class="language-js">data</code>. Key-value pairs not included in data will be lost. Returns a
-          JSON object
-          containing the overwritten database record with an <code class="language-js">action</code> property that is
-          set to 'update'.</li>
-        <li><code class="language-js">websocket.actions.updateResource(collection, id, data)</code>: updates an existing
-          record by modifying existing
-          fields and/or adding new ones. Existing key-value pairs not included in <code class="language-js">data</code>
-          will remain in the
-          document. Returns a JSON object containing the updated database record with an <code
-            class="language-js">action</code> property that is set to
-          'patch'.</li>
-        <li><code class="language-js">websocket.actions.deleteResource(collection, id)</code>: returns a JSON object
-          containing the deleted database
-          record with an <code class="language-js">action</code> property that is set to 'delete'.</li>
-      </ul>
+      <table class="documentation table">
+        <thead>
+          <tr>
+            <th class="method">Method</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code class="language-js">ws.actions.findResource(collection, query)</code></td>
+            <td>returns a JSON object containing an <code class="language-js">action</code> property that
+              is set to 'find' and a <code class="language-js">response</code> property that is set to an array of
+              database records that match the query.
+            </td>
+          </tr>
+          <tr>
+            <td><code class="language-js">ws.actions.getCollection(collection)</code></td>
+            <td>returns a JSON object containing an array of database records
+              for the collection with an <code class="language-js">action</code> property that is set to 'getAll' and a
+              <code class="language-js">collection</code> property that is set to the collection name.
+            </td>
+          </tr>
+          <tr>
+            <td><code class="language-js">ws.actions.getResource(collection, id)</code></td>
+            <td>returns a JSON object containing a database record with an
+              <code class="language-js">action</code> property that is set to 'getOne'.
+            </td>
+          </tr>
+          <tr>
+            <td><code class="language-js">ws.actions.createResource(collection, data)</code></td>
+            <td>returns a JSON object containing the new database record
+              with an <code class="language-js">action</code> property that is set to 'create'.
+            </td>
+          </tr>
+          <tr>
+            <td><code class="language-js">ws.actions.overwriteResource(collection, id, data)</code></td>
+            <td>overwrites the existing record with the key-value pairs in <code class="language-js">data</code>.
+              Key-value pairs not included in data will be lost. Returns a
+              JSON object containing the overwritten database record with an <code class="language-js">action</code>
+              property that is
+              set to 'update'.
+            </td>
+          </tr>
+          <tr>
+            <td><code class="language-js">ws.actions.updateResource(collection, id, data)</code></td>
+            <td>updates an existing record by modifying existing fields and/or adding new ones. Existing key-value pairs
+              not
+              included in <code class="language-js">data</code>
+              will remain in the document. Returns a JSON object containing the updated database record with an <code
+                class="language-js">action</code> property that is set to
+              'patch'.</td>
+          </tr>
+          <tr>
+            <td><code class="language-js">ws.actions.deleteResource(collection, id)</code></td>
+            <td>returns a JSON object containing the deleted database
+              record with an <code class="language-js">action</code> property that is set to 'delete'.</td>
+          </tr>
+        </tbody>
+      </table>
 
       <h5 id="ws-channels" data-title="Channels">Websocket Channels</h5>
-      <ul>
-        <li><code class="language-js">websocket.actions.joinUsersChannels(usersInformationCollection)</code>: returns a
-          list of channels the user is
-          subscribed to.</li>
-        <li><code
-            class="language-js">websocket.actions.createChannel(usersInformationCollection, channelType, name)</code>:
-          creates a new channel
-          document and updates the <code class="language-js">currentChannel</code> and <code
-            class="language-js">channels</code> fields in the user's 'usersInformationCollection'
-          document. It also broadcasts the new channel to all active websocket connections.</li>
-        <li><code
-            class="language-js">websocket.actions.joinChannel(usersInformationCollection, channelType, channelId)</code>:
-          subscribes a user to the
-          channel referenced by <code class="language-js">channelType</code> and <code
-            class="language-js">channelId</code> and updates the <code class="language-js">currentChannel</code> and
-          <code class="language-js">channels</code>
-          fields in the user's 'usersInformationCollection' document.</li>
-        <li><code
-            class="language-js">websocket.actions.leaveChannel(usersInformationCollection, channelType, channelId)</code>:
-          unsubscribes a user from
-          the channel referenced by <code class="language-js">channelType</code> and <code
-            class="language-js">channelId</code> and updates the <code class="language-js">currentChannel</code> and
-          <code class="language-js">channels</code>
-          fields in the user's 'usersInformationCollection' document.</li>
-        <li><code
-            class="language-js">websocket.actions.changeChannel(usersInformationCollection, channelType, channelId)</code>:
-          changes the user's
-          current channel to the channel referenced by <code class="language-js">channelType</code> and <code
-            class="language-js">channelId</code> by updating the
-          <code class="language-js">currentChannel</code> field in the user's 'usersInformationCollection' document.
-        </li>
-        <li><code class="language-js">websocket.actions.deleteChannel(usersInformationCollection, channelMessagesCollection, channelType,
-          channelId)</code>: deletes the channel referenced by <code class="language-js">channelType</code> and <code
-            class="language-js">channelId</code> along with all the messages associated with it. The <code
-            class="language-js">currentChannel</code> and <code class="language-js">channels</code> fields are then
-          updated in the
-          'usersInformationCollection' document for each user that is subscribed to the channel.</li>
-      </ul>
+      <table class="documentation table">
+        <thead>
+          <tr>
+            <th class="method">Method</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code class="language-js">ws.actions.joinUsersChannels(usersInformationCollection)</code></td>
+            <td>returns a list of channels the user is subscribed to.</td>
+          </tr>
+          <tr>
+            <td><code class="language-js">ws.actions.createChannel(usersInformationCollection, channelType, name)</code>
+            </td>
+            <td>creates a new channel document and updates the <code class="language-js">currentChannel</code> and <code
+                class="language-js">channels</code> fields in the user's 'usersInformationCollection' document.
+              It also broadcasts the new channel to all active websocket connections.
+            </td>
+          </tr>
+          <tr>
+            <td><code
+                class="language-js">ws.actions.joinChannel(usersInformationCollection, channelType, channelId)</code>
+            </td>
+            <td>
+              subscribes a user to the
+              channel referenced by <code class="language-js">channelType</code> and <code
+                class="language-js">channelId</code> and updates the <code class="language-js">currentChannel</code> and
+              <code class="language-js">channels</code>
+              fields in the user's 'usersInformationCollection' document.
+            </td>
+          </tr>
+          <tr>
+            <td><code class="language-js">ws.actions.leaveChannel(usersInformationCollection, channelType, channelId)</code>
+            </td>
+            <td>unsubscribes a user from the channel referenced by <code class="language-js">channelType</code> and <code
+                class="language-js">channelId</code> and updates the <code class="language-js">currentChannel</code> and
+              <code class="language-js">channels</code>
+              fields in the user's 'usersInformationCollection' document.</td>
+          </tr>
+          <tr>
+            <td><code
+                class="language-js">ws.actions.changeChannel(usersInformationCollection, channelType, channelId)</code>
+            </td>
+            <td>
+              changes the user's current channel to the channel referenced by <code class="language-js">channelType</code> and <code
+                class="language-js">channelId</code> by updating the
+              <code class="language-js">currentChannel</code> field in the user's 'usersInformationCollection' document.
+            </td>
+          </tr>
+          <tr>
+            <td><code class="language-js">ws.actions.deleteChannel(usersInformationCollection, channelMessagesCollection, channelType,
+            channelId)</code></td>
+            <td>
+              deletes the channel referenced by <code class="language-js">channelType</code> and <code
+              class="language-js">channelId</code> along with all the messages associated with it. The <code
+              class="language-js">currentChannel</code> and <code class="language-js">channels</code> fields are then
+              updated in the 'usersInformationCollection' document for each user that is subscribed to the channel.
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <h5 id="ws-and-http-responses" data-title="Responses">Websocket & HTTP Responses</h5>
       <p>When HTTP requests are made by calling certain methods on the db object of the SDK (<code
@@ -620,7 +709,8 @@
 
       <h4 id="stack-management">Stack Management</h4>
       <p>Luckily, there are tools for managing containerized systems that will make these tasks manageable.</p>
-      <p><a href="https://docs.docker.com/get-started/orchestration">Container orchestrators</a> are tools to 'manage, scale, and maintain containerized applications' and the networks
+      <p><a href="https://docs.docker.com/get-started/orchestration">Container orchestrators</a> are tools to 'manage,
+        scale, and maintain containerized applications' and the networks
         they use to communicate.
         Docker Swarm and Kubernetes are two of the most popular container orchestrators. We chose to use Docker Swarm
         because it is a part of Docker, which eliminates an extra dependency for our system. It is also simpler to use
@@ -797,7 +887,8 @@
               <p>&#9745; Spin up / tear down backpack stacks across servers Worker & Manager Nodes</p>
               <p>&#9745; Manage communication within stacks across servers Overlay Networks</p>
               <p>&#9745; Route requests from the internet to the right backpack Traefik & Overlay Networks</p>
-              <p>&#9745; make it <span class="emphasize">easy</span> to spin up / tear down backpack stacks Admin panel hiding Docker CLI</p>
+              <p>&#9745; make it <span class="emphasize">easy</span> to spin up / tear down backpack stacks Admin panel
+                hiding Docker CLI</p>
               <p>&#9745; Manage backpack users & data from a centralized admin panel Overlay Networks</p>
             </td>
           </tr>
