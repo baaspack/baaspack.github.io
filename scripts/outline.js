@@ -82,7 +82,7 @@ const scroller = () => {
         progress.parentNode.classList.add('visible');
 
         setActive(progress, activeSection);
-      }, 250);
+      }, 150);
 
       tick = true;
     }
