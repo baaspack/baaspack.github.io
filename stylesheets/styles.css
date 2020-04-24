@@ -354,7 +354,6 @@ table.documentation .method code {
   font-size: .8rem;
 }
 
-
 table.table tr {
   border-bottom: 1px solid #ccc;
   line-height: 1.5rem;
@@ -418,6 +417,11 @@ aside .visible > ul > li {
     margin-left: auto;
     margin-right: 20px;
   }
+}
+
+.emphasize {
+  font-style: italic;
+  font-weight: bold;
 }
 
 @media (max-width: 800px) {
