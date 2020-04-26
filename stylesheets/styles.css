@@ -554,5 +554,12 @@ article.case-study .todos li {
     width: 90%;
     margin-top: 3%;
   }
+
+  article.case-study {
+    font-size: .9rem;
+    margin: 0 auto;
+    width: 90%;
+  }
+
 }
 
