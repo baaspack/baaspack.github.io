@@ -471,6 +471,10 @@ article.case-study .todos li {
   color: var(--color-pomegranate);
 }
 
+.gif-border {
+  border: 2px solid var(--color-claret);
+}
+
 
 @media (max-width: 1200px) {
   article.case-study {
