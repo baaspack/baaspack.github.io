@@ -544,9 +544,13 @@
         the Nginx web server, and serve the website from <a href="https://my-app.bkpk.dev">my-app.bkpk.dev</a>, also
         over HTTPS. This process
         takes less than a minute.</p>
-      <p>===Another gif of uploading a frontend zip and hitting the website</p>
+
+      <img src="./images/gifs/bkpk_host.gif" alt="Creating a Backpack" class="gif-border">
+
       <p>Multiple backpacks can be hosted in the same deployment.</p>
-      <p>===Another gif of adding a second and third backpack </p>
+     
+      <img src="./images/gifs/bkpk_create_multiple.gif" alt="Creating a Backpack" class="gif-border">
+
       <p>In the remaining sections, we explain how we packaged our core API with its dependencies on our way to building
         a multi-instance infrastructure that supports multiple backends on a single Backpack deployment. We outline the
         challenges we faced in moving from our original single-instance architecture to the full-featured system we
@@ -855,9 +859,15 @@
         in, the frontend developers are presented with a UI that lets them spin up a new Backpack stack by assigning it
         a name and clicking 'submit.' The backend of the admin panel receives the request to spin up a new Backpack and
         runs the relevant CLI commands. The standard output and error streams from the CLI are piped back to the admin
-        panel to confirm that the entire stack is spinning up correctly. Backpack stacks can also be torn down with a
-        click of a button using a similar process.</p>
-      <p><img alt="" src="images/case-study/image2.gif" title=""></p>
+        panel to confirm that the entire stack is spinning up correctly.</p>
+
+      <img src="./images/gifs/bkpk_create.gif" alt="Creating a Backpack" class="gif-border">
+
+      <p>Backpack stacks can also be torn down with a click of a button using a similar process.</p>
+
+      <img src="./images/gifs/bkpk_delete.gif" alt="Creating a Backpack" class="gif-border">
+
+
       <p>We built the admin panel as another containerized application running in the swarm. We relied on Redis again to
         provide session storage, Express as a framework to build the backend, and Nginx to serve the frontend of the
         application. A container running Postgres provides the data persistence we need to manage user accounts for
