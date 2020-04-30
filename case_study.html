@@ -44,8 +44,7 @@
         functionality like database persistence and user authentication, Backpack hides the complexities of setting up
         and managing backend services so that frontend developers can focus on building out web applications.</p>
       <p>Backpack spins up an environment that can easily generate any number of isolated backends. It is
-        self-contained, enabling database persistence and storage without relying on external cloud services so that
-        frontend developers retain full control over their application data.</p>
+        self-contained, enabling database persistence and storage so that frontend developers retain full control over their application data.</p>
       <p>A Backpack deployment consists of one or more Backpacks that each provides basic backend functionality for a
         web app. To enable each Backpack deployment to support multiple Backpacks, we built the system using a
         multi-instance architecture enabled by Docker Swarm:</p>
@@ -69,8 +68,7 @@
         the user's frontend experience.</p>
       <p><img alt="Examples of backend providing business logic: authentication, data persistence, file storage"
           src="images/case-study/backend-logic-examples.png" title=""></p>
-      <p>So what does 'managing data' and 'handling business logic' actually mean? There are a host of tasks that
-        comprise backend functionality, including user authentication, data persistence, request routing, and file
+      <p>There are a host of tasks that comprise backend functionality, including user authentication, data persistence, request routing, and file
         storage. Additionally, applications may require support for realtime communication. Finally, after a backend is
         built, deployment brings its own challenges such as server configuration, SSL certificates, and frontend
         hosting.</p>
@@ -83,10 +81,7 @@
         these services into their web applications by making calls to the API.</p>
       <p><img alt="Basic architecture of a BaaS: a front end interacting with a backend through an exposed API"
           src="images/case-study/baas-architecture.png" title=""></p>
-      <p>To facilitate interaction with the API, a BaaS typically provides a Software Development Kit (SDK). An SDK is a
-        library that provides convenience methods for interacting with the exposed API. A frontend developer uses the
-        SDK to communicate with the backend through its API. For web applications, the SDK is written in JavaScript.
-        SDKs are often available for iOS and Android development as well.</p>
+      <p>To facilitate interaction with the API, a BaaS typically provides a Software Development Kit (SDK).</p>
       <p>By providing this functionality, a BaaS handles a significant portion of a web app's overall architecture. This
         is one of the primary differentiators between BaaS and other cloud services such as Infrastructure-as-a-Service
         (IaaS), Platform-as-a-Service (PaaS), and Function-as-a-Service (FaaS): in addition to infrastructure, a BaaS
@@ -104,14 +99,11 @@
         services mentioned above, a BaaS handles more of an application's core functionality and therefore gives
         developers less control. Relying on a hosted BaaS means that a developer's data lives on infrastructure that is
         owned and controlled by the service provider. Even if developers can access and interact with the data generated
-        by their applications, <a href="https://www.inkandswitch.com/local-first.html">this question of ownership and
-          control over data is worth considering</a>, especially for
+        by their applications, this question of ownership and control over data is worth considering, especially for
         developers concerned about privacy. Furthermore, relying on a hosted BaaS exposes a developer to the risk of
         vendor lock-in if their application outgrows the BaaS. These closed-source systems are not customizable beyond
         the built-in features offered by the provider. If a vendor drops support for features, makes changes that break
-        existing applications, raises the cost of their services, or <a
-          href="https://techcrunch.com/2016/01/28/facebook-shutters-its-parse-developer-platform">closes their service
-          altogether</a>, a developer may find it difficult to move their applications to a different platform.</p>
+        existing applications, raises the cost of their services, or closes their service altogether, a developer may find it difficult to move their applications to a different platform.</p>
       <p>We attempted to address these concerns with Backpack, an open-source, self-hosted BaaS. While a self-hosted
         BaaS leaves more responsibility for developers, it also gives them more autonomy and ownership over their
         applications and data. Because Backpack is self-hosted, application data stored in Backpack is owned and
@@ -167,7 +159,7 @@
         database models. Instead, we needed to be able to dynamically generate both HTTP routes and database models
         based on the collections a frontend developer created for their web app.</p>
       <p>When Backpack starts up, it automatically generates HTTP routes for all the collections in its database. As new
-        collections are created, their full set of RESTful API endpoints are dynamically added to the existing routes so
+        collections are created, their full set of REST API endpoints are dynamically added to the existing routes so
         Backpack can handle requests for the new collections without requiring the entire application to restart to pick
         up the new routes.</p>
       <p>By calling <code class="language-js">bkpk.db.createNewCollection(collectionName)</code> with a string
@@ -218,7 +210,7 @@
           </tr>
         </tbody>
       </table>
-      <p>These methods correspond to the following RESTful API endpoints exposed by Backpack, using 'cars' as an example
+      <p>These methods correspond to the following REST API endpoints exposed by Backpack, using 'cars' as an example
         collection:</p>
       <table class="table http-verbs">
         <thead>
@@ -300,7 +292,7 @@
         </tbody>
       </table>
       <p>When deployed with a custom domain, Backpack automatically requests SSL certificates from Let's Encrypt to
-        encrypt traffic using HTTPS, an essential precaution to take with sensitive information like passwords.</p>
+        encrypt traffic using HTTPS.</p>
 
       <h4 id="file-storage" data-title="File Storage">File Storage: the <code>storage</code> module</h4>
       <p>Backpack provides local file storage for user content. We chose local storage for several reasons. First, one
@@ -524,9 +516,7 @@
       <h4 id="hosting" data-title="Hosting">Hosting a Web Application with Backpack</h4>
       <p>The final step in the development of a web app is deploying it for hosting on the internet. Since the backend
         functionality of the web apps using Backpack is being handled via API calls, the frontend can easily be built as
-        a static site that simply makes calls to the Backpack API to provide its core functionality. This pattern of
-        designing static sites built with JavaScript, API calls, and Markup is referred to as the JAMstack and has been
-        popularized by the deployment platform Netlify.</p>
+        a static site that simply makes calls to the Backpack API to provide its core functionality.</p>
       <p>When a frontend developer spins up a Backpack using the Backpack admin panel, they give it a name, like
         'my-app'. This name will be the subdomain where their backend will be hosted. For example, if the Backpack
         system is hosted at <a href="https://bkpk.dev">bkpk.dev</a>, the particular Backpack
@@ -562,7 +552,7 @@
         One of our main goals was to make deployment quick and simple. We didn't want to require a frontend developer to
         install dependencies such as Node (for the Express API), Mongo (for database persistence), Redis (for user
         sessions), Nginx (for frontend hosting), and have to handle version incompatibilities and other configuration
-        headaches. Containerizing our system seemed like the right solution.</p>
+        headaches. That’s why we chose to containerize all of the components that make up a single Backpack instance.</p>
 
       <h3 id="what-are-containers" data-title="Containers">What are containers?</h3>
       <p>Containers are a way to package applications with their dependencies in a consistent runtime environment that
@@ -591,7 +581,7 @@
       <p><img alt="Containerized Backpack instance with four containers on a bridge networking"
           src="images/case-study/backpack-bridge-network.png" title=""></p>
       <p>Containerizing Backpack in this way dramatically simplifies the work required to deploy Backpack by eliminating
-        the need to manually set up and install the ecosystemBackpack depends on. By running the entire application
+        the need to manually set up and install the ecosystem Backpack depends on. By running the entire application
         through Docker, we can guarantee a consistent environment and runtime for each component of our system,
         regardless of where Backpack is spun up.</p>
 
@@ -808,7 +798,7 @@
         will require the reverse proxy to restart for the changes to take effect, which creates downtime for the system.
         One solution for this problem would be to replicate the reverse proxy and stagger updates, but we would prefer
         to avoid these complications if possible.</p>
-      <p>In looking for an alternative approach, we found Traefik, a reverse proxy built for use with containerized
+      <p>We chose to use Traefik, a reverse proxy built for use with containerized
         applications. Traefik is deployed as another service within our swarm and configured to communicate with the
         swarm manager for updates on the state of the swarm. Based on the information it receives from the swarm
         manager, Traefik reconfigures itself to route requests to new stacks or stop serving requests from stacks that
@@ -934,17 +924,20 @@
       <h2 id="references">References</h2>
       <ul class="bullets">
         <li>
-          <a href="https://blog.back4app.com/2019/07/24/backend-as-a-service-baas/">What is Backend as a Service
+          <a href="https://blog.back4app.com/2019/07/24/backend-as-a-service-baas/" target="_blank">What is Backend as a Service
             (BaaS)?</a>
         </li>
         <li>
-          <a href="https://jamstack.org/">JAMStack for static sites</a>
+          <a href="https://www.inkandswitch.com/local-first.html" target="_blank">Local-first software</a>
         </li>
         <li>
-          <a href="https://docs.docker.com/compose/">Overview of Docker Compose</a>
+          <a href="https://techcrunch.com/2016/01/28/facebook-shutters-its-parse-developer-platform/" target="_blank">Facebook Shutters Its Parse Developer Platform</a>
         </li>
         <li>
-          <a href="https://docs.docker.com/get-started/orchestration/">Container Orchestration</a>
+          <a href="https://docs.docker.com/compose/" target="_blank">Overview of Docker Compose</a>
+        </li>
+        <li>
+          <a href="https://docs.docker.com/get-started/orchestration/" target="_blank">Container Orchestration</a>
         </li>
       </ul>
     </article>
