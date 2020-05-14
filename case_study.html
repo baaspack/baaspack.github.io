@@ -2,11 +2,19 @@
 
 <html lang="en">
 
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <title>Backpack</title>
+  <meta name="title" property="og:title" content="Backpack: Case Study" />
+  <meta name="description" property="og:description"
+    content="How we built a portable, multi-instance backend-as-a-service" />
+  <meta name="image" property="og:image" content="./images/backpack_logo-full-with-background-color.png" />
+  <meta name="url" property="og:url" content="https://bkpk.dev/case_study.html" />
+  <meta name="type" property="og:type" content="website" />
+  <meta name="author" content="Holden Hinkle, Liela Rotschy, Ido Moskovich" />
+
+  <title>Case Study | Backpack</title>
+
   <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
   <link rel="icon" href="./images/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="./stylesheets/reset.css">
@@ -44,7 +52,8 @@
         functionality like database persistence and user authentication, Backpack hides the complexities of setting up
         and managing backend services so that frontend developers can focus on building out web applications.</p>
       <p>Backpack spins up an environment that can easily generate any number of isolated backends. It is
-        self-contained, enabling database persistence and storage so that frontend developers retain full control over their application data.</p>
+        self-contained, enabling database persistence and storage so that frontend developers retain full control over
+        their application data.</p>
       <p>A Backpack deployment consists of one or more Backpacks that each provides basic backend functionality for a
         web app. To enable each Backpack deployment to support multiple Backpacks, we built the system using a
         multi-instance architecture enabled by Docker Swarm:</p>
@@ -68,7 +77,8 @@
         the user's frontend experience.</p>
       <p><img alt="Examples of backend providing business logic: authentication, data persistence, file storage"
           src="images/case-study/backend-logic-examples.png" title=""></p>
-      <p>There are a host of tasks that comprise backend functionality, including user authentication, data persistence, request routing, and file
+      <p>There are a host of tasks that comprise backend functionality, including user authentication, data persistence,
+        request routing, and file
         storage. Additionally, applications may require support for realtime communication. Finally, after a backend is
         built, deployment brings its own challenges such as server configuration, SSL certificates, and frontend
         hosting.</p>
@@ -103,7 +113,8 @@
         developers concerned about privacy. Furthermore, relying on a hosted BaaS exposes a developer to the risk of
         vendor lock-in if their application outgrows the BaaS. These closed-source systems are not customizable beyond
         the built-in features offered by the provider. If a vendor drops support for features, makes changes that break
-        existing applications, raises the cost of their services, or closes their service altogether, a developer may find it difficult to move their applications to a different platform.</p>
+        existing applications, raises the cost of their services, or closes their service altogether, a developer may
+        find it difficult to move their applications to a different platform.</p>
       <p>We attempted to address these concerns with Backpack, an open-source, self-hosted BaaS. While a self-hosted
         BaaS leaves more responsibility for developers, it also gives them more autonomy and ownership over their
         applications and data. Because Backpack is self-hosted, application data stored in Backpack is owned and
@@ -322,16 +333,14 @@
               for the files associated with a user.</td>
           </tr>
           <tr>
-            <td><code
-                class="language-js">bkpk.storage.uploadFile(fileFromFormData, filename, bucket)</code></td>
+            <td><code class="language-js">bkpk.storage.uploadFile(fileFromFormData, filename, bucket)</code></td>
             <td>saves the
               file in the file system and a
               record of associated user data in the database. Returns a JSON object containing metadata if successful,
               validation errors if not.</td>
           </tr>
           <tr>
-            <td><code
-                class="language-js">bkpk.storage.updateFile(currentFilename, newFilename, bucket)</code></td>
+            <td><code class="language-js">bkpk.storage.updateFile(currentFilename, newFilename, bucket)</code></td>
             <td>overwrites file metadata. Returns a JSON
               object containing metadata if successful, validation errors if not.</td>
           </tr>
@@ -523,7 +532,7 @@
         instance URL will be served over HTTPS at <a href="https://my-app-be.backpack.dev">my-app-be.bkpk.dev</a> where
         the '-be' in the URL
         represents 'backend'.</p>
-      
+
       <img src="./images/gifs/bkpk_create.gif" alt="Creating a Backpack" class="gif-border">
 
       <p>Developers can view and manage collection data and users in the admin panel for each backpack:</p>
@@ -538,7 +547,7 @@
       <img src="./images/gifs/bkpk_host.gif" alt="Creating a Backpack" class="gif-border">
 
       <p>Multiple backpacks can be hosted in the same deployment.</p>
-     
+
       <img src="./images/gifs/bkpk_create_multiple.gif" alt="Creating a Backpack" class="gif-border">
 
       <p>In the remaining sections, we explain how we packaged our core API with its dependencies on our way to building
@@ -552,7 +561,8 @@
         One of our main goals was to make deployment quick and simple. We didn't want to require a frontend developer to
         install dependencies such as Node (for the Express API), Mongo (for database persistence), Redis (for user
         sessions), Nginx (for frontend hosting), and have to handle version incompatibilities and other configuration
-        headaches. That’s why we chose to containerize all of the components that make up a single Backpack instance.</p>
+        headaches. That’s why we chose to containerize all of the components that make up a single Backpack instance.
+      </p>
 
       <h3 id="what-are-containers" data-title="Containers">What are containers?</h3>
       <p>Containers are a way to package applications with their dependencies in a consistent runtime environment that
@@ -618,8 +628,9 @@
           also need to give them access to their application data. If we don't add additional components to the system,
           all of this would need to be built into the single Express API.</li>
       </ol>
-      
-      <p>The next set of challenges arise from the lack of isolation between applications using the multi-tenant model:</p>
+
+      <p>The next set of challenges arise from the lack of isolation between applications using the multi-tenant model:
+      </p>
 
       <ol start="3">
         <li>If one tenant receives heavy traffic or puts a heavy load on the database, it could lead to problems with
@@ -726,7 +737,7 @@
           <li class="done-now">&#9745; Spin up / tear down backpack stacks</li>
         </ul>
       </div>
-      
+
       <p>Docker Swarm is designed to manage services running on multiple nodes, which is just what we need to scale our
         system. A node in Swarm terminology is a machine running Docker that is a member of the swarm. Nodes can be
         managers or workers.</p>
@@ -901,7 +912,7 @@
         reflect database changes on the frontend of the admin panel. This requires a custom Redux middleware that
         automatically updates the state of the admin panel based on the messages broadcast from the Backpack's websocket
         connection.</p>
-        
+
       <p>With this final feature, the last items on our Backpack to-do list can be checked off. </p>
       <div class="todos">
         <ul>
@@ -909,7 +920,8 @@
           <li class="done-now">&#9745; Spin up / tear down backpack stacks across servers</li>
           <li class="done-now">&#9745; Manage communication within stacks across servers</li>
           <li class="done-now">&#9745; Route requests from the internet to the right backpack</li>
-          <li class="done-now">&#9745; Make it <span class="emphasize">easy</span> to spin up / tear down backpack stacks</li>
+          <li class="done-now">&#9745; Make it <span class="emphasize">easy</span> to spin up / tear down backpack
+            stacks</li>
           <li class="done-now">&#9745; Manage backpack users & data from a centralized admin panel</li>
         </ul>
       </div>
@@ -924,14 +936,16 @@
       <h2 id="references">References</h2>
       <ul class="bullets">
         <li>
-          <a href="https://blog.back4app.com/2019/07/24/backend-as-a-service-baas/" target="_blank">What is Backend as a Service
+          <a href="https://blog.back4app.com/2019/07/24/backend-as-a-service-baas/" target="_blank">What is Backend as a
+            Service
             (BaaS)?</a>
         </li>
         <li>
           <a href="https://www.inkandswitch.com/local-first.html" target="_blank">Local-first software</a>
         </li>
         <li>
-          <a href="https://techcrunch.com/2016/01/28/facebook-shutters-its-parse-developer-platform/" target="_blank">Facebook Shutters Its Parse Developer Platform</a>
+          <a href="https://techcrunch.com/2016/01/28/facebook-shutters-its-parse-developer-platform/"
+            target="_blank">Facebook Shutters Its Parse Developer Platform</a>
         </li>
         <li>
           <a href="https://docs.docker.com/compose/" target="_blank">Overview of Docker Compose</a>
